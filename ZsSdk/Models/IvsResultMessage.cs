@@ -54,4 +54,14 @@ public class IvsResultMessage
     /// </summary>
     [JsonPropertyName("timeString")]
     public string? TimeString { get; set; }
+    /// <summary>
+    /// 车牌区域图片
+    /// </summary>
+    [JsonIgnore]
+    public byte[]? ClipImg { get; set; }
+    /// <summary>
+    /// 整幅大图
+    /// </summary>
+    [JsonIgnore]
+    public byte[]? FullImg { get; set; }
 }

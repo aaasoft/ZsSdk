@@ -98,14 +98,13 @@ public class ZsClient : IDisposable
     }
 
     /// <summary>
-    /// 发送请求并接收响应
+    /// 发送请求
     /// </summary>
     /// <typeparam name="TRequest">请求类型</typeparam>
-    /// <typeparam name="TResponse">响应类型</typeparam>
     /// <param name="request">请求对象</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>响应对象</returns>
-    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+    public async Task SendRequestAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default)
     {
         if (_stream == null)
             throw new InvalidOperationException("未连接到设备");
@@ -115,9 +114,22 @@ public class ZsClient : IDisposable
 
         await _stream.WriteAsync(packet, 0, packet.Length, cancellationToken);
         await _stream.FlushAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// 发送请求并接收响应
+    /// </summary>
+    /// <typeparam name="TRequest">请求类型</typeparam>
+    /// <typeparam name="TResponse">响应类型</typeparam>
+    /// <param name="request">请求对象</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>响应对象</returns>
+    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+    {
+        await SendRequestAsync(request, cancellationToken);
 
         byte[] responsePacket = await ReadPacketAsync(cancellationToken);
-        string? responseJson = PacketParser.ExtractJson(responsePacket);
+        string? responseJson = PacketParser.ExtractJson(responsePacket, out _);
 
         if (string.IsNullOrEmpty(responseJson))
             throw new InvalidOperationException("无法解析响应数据");
@@ -170,11 +182,10 @@ public class ZsClient : IDisposable
                     continue;
                 }
 
-                string? json = PacketParser.ExtractJson(packet);
+                string? json = PacketParser.ExtractJson(packet, out var extraDataSpan);
                 if (string.IsNullOrEmpty(json))
                     continue;
-                Console.WriteLine($"接收到消息：{json}");
-                ProcessReceivedMessage(json);
+                ProcessReceivedMessage(json, extraDataSpan);
             }
             catch (OperationCanceledException)
             {
@@ -187,7 +198,7 @@ public class ZsClient : IDisposable
         }
     }
 
-    private void ProcessReceivedMessage(string json)
+    private void ProcessReceivedMessage(string json, ReadOnlySpan<byte> extraDataSpan)
     {
         using var doc = JsonDocument.Parse(json);
         var root = doc.RootElement;
@@ -204,7 +215,19 @@ public class ZsClient : IDisposable
             case "ivs_result":
                 var ivsResult = JsonSerializer.Deserialize<IvsResultMessage>(json, JsonOptions);
                 if (ivsResult != null)
+                {
+                    if (ivsResult.ClipImgSize > 0)
+                    {
+                        ivsResult.ClipImg = extraDataSpan.Slice(0, ivsResult.ClipImgSize).ToArray();
+                        extraDataSpan = extraDataSpan.Slice(ivsResult.ClipImgSize);
+                    }
+                    if (ivsResult.FullImgSize > 0)
+                    {
+                        ivsResult.FullImg = extraDataSpan.Slice(0, ivsResult.FullImgSize).ToArray();
+                        extraDataSpan = extraDataSpan.Slice(ivsResult.FullImgSize);
+                    }
                     OnIvsResult?.Invoke(this, ivsResult);
+                }
                 break;
 
             case "gpio_trigger":

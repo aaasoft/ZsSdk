@@ -13,6 +13,10 @@ await client.ConnectAsync();
 client.OnIvsResult += (sender, result) =>
 {
     Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss}: 识别到车牌: {result.PlateResult?.License}");
+    if(result.FullImg!=null)
+        File.WriteAllBytes($"FullImg_{DateTime.Now:yyyyMMdd_HHmmss}.jpg",result.FullImg);
+    if(result.ClipImg!=null)
+        File.WriteAllBytes($"ClipImg_{DateTime.Now:yyyyMMdd_HHmmss}.jpg",result.ClipImg);
 };
 // 获取序列号
 var snResponse = await client.SendRequestAsync<GetSnRequest, GetSnResponse>(
@@ -33,6 +37,12 @@ Console.WriteLine($"启动消息接收循环");
 //发送心跳包
 _ = Task.Delay(1000).ContinueWith(async t =>
 {
+    //用上一次识别来触发
+    await client.SendRequestAsync(new GetIvsResultRequest()
+    {
+        Format = "json",
+        Image = true
+    });
     while (true)
     {
         await Task.Delay(5000);

@@ -90,8 +90,9 @@ public static class PacketParser
     /// </summary>
     /// <param name="packet">完整的数据包</param>
     /// <returns>JSON字符串</returns>
-    public static string? ExtractJson(ReadOnlySpan<byte> packet)
+    public static string? ExtractJson(ReadOnlySpan<byte> packet,out ReadOnlySpan<byte> extraDataSpan)
     {
+        extraDataSpan = ReadOnlySpan<byte>.Empty;
         if (!TryParseHeader(packet, out var header))
             return null;
 
@@ -102,39 +103,16 @@ public static class PacketParser
             return null;
 
         var dataSpan = packet.Slice(PacketHeader.HeaderSize, header.DataLength);
+        extraDataSpan = packet.Slice(PacketHeader.HeaderSize + header.DataLength);
+
         var jsonEndIndex = dataSpan.IndexOf((byte)0);
         if (jsonEndIndex > 0)
+        {
             dataSpan = dataSpan.Slice(0, jsonEndIndex);
+            extraDataSpan = packet.Slice(PacketHeader.HeaderSize + jsonEndIndex + 1);
+        }
         var json = encoding.GetString(dataSpan);
         return json;
-    }
-
-    /// <summary>
-    /// 从数据包中提取JSON并反序列化
-    /// </summary>
-    /// <typeparam name="T">目标类型</typeparam>
-    /// <param name="packet">完整的数据包</param>
-    /// <returns>反序列化后的对象</returns>
-    public static T? ExtractAndDeserialize<T>(ReadOnlySpan<byte> packet)
-    {
-        string? json = ExtractJson(packet);
-        if (string.IsNullOrEmpty(json))
-            return default;
-
-        return JsonSerializer.Deserialize<T>(json, JsonOptions);
-    }
-
-    /// <summary>
-    /// 序列化对象并创建数据包
-    /// </summary>
-    /// <typeparam name="T">对象类型</typeparam>
-    /// <param name="obj">要序列化的对象</param>
-    /// <param name="sequenceNumber">包序号</param>
-    /// <returns>完整的数据包字节数组</returns>
-    public static byte[] SerializeAndCreatePacket<T>(T obj, byte sequenceNumber = 0)
-    {
-        string json = JsonSerializer.Serialize(obj, JsonOptions);
-        return CreatePacket(json, sequenceNumber);
     }
 
     /// <summary>
