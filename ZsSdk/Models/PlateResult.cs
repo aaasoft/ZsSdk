@@ -114,10 +114,4 @@ public class PlateResult
     /// </summary>
     [JsonPropertyName("car_brand")]
     public CarBrand? CarBrand { get; set; }
-
-    /// <summary>
-    /// 特征码(16位字符串)
-    /// </summary>
-    [JsonPropertyName("featureCode")]
-    public string? FeatureCode { get; set; }
 }

@@ -11,6 +11,7 @@ namespace ZsSdk;
 /// </summary>
 public static class PacketParser
 {
+    private static readonly Encoding encoding = Encoding.GetEncoding("GB18030");
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -26,7 +27,7 @@ public static class PacketParser
     /// <returns>完整的数据包字节数组</returns>
     public static byte[] CreatePacket(string json, byte sequenceNumber = 0)
     {
-        byte[] data = Encoding.UTF8.GetBytes(json);
+        byte[] data = encoding.GetBytes(json);
         byte[] packet = new byte[PacketHeader.HeaderSize + data.Length];
 
         // 包头
@@ -100,7 +101,12 @@ public static class PacketParser
         if (packet.Length < PacketHeader.HeaderSize + header.DataLength)
             return null;
 
-        return Encoding.UTF8.GetString(packet.Slice(PacketHeader.HeaderSize, header.DataLength));
+        var dataSpan = packet.Slice(PacketHeader.HeaderSize, header.DataLength);
+        var jsonEndIndex = dataSpan.IndexOf((byte)0);
+        if (jsonEndIndex > 0)
+            dataSpan = dataSpan.Slice(0, jsonEndIndex);
+        var json = encoding.GetString(dataSpan);
+        return json;
     }
 
     /// <summary>

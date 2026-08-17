@@ -1,8 +1,6 @@
 using System.Buffers.Binary;
 using System.Net.Sockets;
-using System.Text;
 using System.Text.Json;
-using ZsSdk.Enums;
 using ZsSdk.Models;
 
 namespace ZsSdk;
@@ -25,6 +23,11 @@ public class ZsClient : IDisposable
         PropertyNameCaseInsensitive = true,
         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
     };
+
+    /// <summary>
+    /// 接收到心跳消息时
+    /// </summary>
+    public event EventHandler? OnHeartbeat;
 
     /// <summary>
     /// 接收到识别结果时触发
@@ -118,35 +121,18 @@ public class ZsClient : IDisposable
 
         if (string.IsNullOrEmpty(responseJson))
             throw new InvalidOperationException("无法解析响应数据");
-
-        TResponse? response = JsonSerializer.Deserialize<TResponse>(responseJson, JsonOptions);
-        if (response == null)
-            throw new InvalidOperationException("响应反序列化失败");
-
+        TResponse? response;
+        try
+        {
+            response = JsonSerializer.Deserialize<TResponse>(responseJson, JsonOptions);
+            if (response == null)
+                throw new InvalidOperationException("响应反序列化失败");
+        }
+        catch
+        {
+            throw new IOException($"将JSON序列化为[{typeof(TResponse).FullName}]时出错，JSON内容：{responseJson}");
+        }
         return response;
-    }
-
-    /// <summary>
-    /// 发送请求并接收响应（使用动态JSON）
-    /// </summary>
-    /// <param name="request">请求对象</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应JSON</returns>
-    public async Task<string> SendRequestAsync(object request, CancellationToken cancellationToken = default)
-    {
-        if (_stream == null)
-            throw new InvalidOperationException("未连接到设备");
-
-        string requestJson = JsonSerializer.Serialize(request, JsonOptions);
-        byte[] packet = PacketParser.CreatePacket(requestJson, GetNextSequenceNumber());
-
-        await _stream.WriteAsync(packet, 0, packet.Length, cancellationToken);
-        await _stream.FlushAsync(cancellationToken);
-
-        byte[] responsePacket = await ReadPacketAsync(cancellationToken);
-        string? responseJson = PacketParser.ExtractJson(responsePacket);
-
-        return responseJson ?? throw new InvalidOperationException("无法解析响应数据");
     }
 
     /// <summary>
@@ -179,12 +165,15 @@ public class ZsClient : IDisposable
                 byte[] packet = await ReadPacketAsync(cancellationToken);
 
                 if (PacketParser.IsHeartbeat(packet))
+                {
+                    OnHeartbeat?.Invoke(this, EventArgs.Empty);
                     continue;
+                }
 
                 string? json = PacketParser.ExtractJson(packet);
                 if (string.IsNullOrEmpty(json))
                     continue;
-
+                Console.WriteLine($"接收到消息：{json}");
                 ProcessReceivedMessage(json);
             }
             catch (OperationCanceledException)
@@ -193,73 +182,66 @@ public class ZsClient : IDisposable
             }
             catch
             {
-                // 忽略解析错误，继续接收
+                throw;
             }
         }
     }
 
     private void ProcessReceivedMessage(string json)
     {
-        try
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+
+        if (!root.TryGetProperty("cmd", out var cmdElement))
+            return;
+
+        string? cmd = cmdElement.GetString();
+        if (string.IsNullOrEmpty(cmd))
+            return;
+
+        switch (cmd)
         {
-            using var doc = JsonDocument.Parse(json);
-            var root = doc.RootElement;
+            case "ivs_result":
+                var ivsResult = JsonSerializer.Deserialize<IvsResultMessage>(json, JsonOptions);
+                if (ivsResult != null)
+                    OnIvsResult?.Invoke(this, ivsResult);
+                break;
 
-            if (!root.TryGetProperty("cmd", out var cmdElement))
-                return;
+            case "gpio_trigger":
+                var gpioTrigger = JsonSerializer.Deserialize<Commands.GpioTriggerMessage>(json, JsonOptions);
+                if (gpioTrigger != null)
+                    OnGpioTrigger?.Invoke(this, gpioTrigger);
+                break;
 
-            string? cmd = cmdElement.GetString();
-            if (string.IsNullOrEmpty(cmd))
-                return;
+            case "offline_status_change":
+                var offlineStatus = JsonSerializer.Deserialize<Commands.OfflineStatusChangeMessage>(json, JsonOptions);
+                if (offlineStatus != null)
+                    OnOfflineStatusChange?.Invoke(this, offlineStatus);
+                break;
 
-            switch (cmd)
-            {
-                case "ivs_result":
-                    var ivsResult = JsonSerializer.Deserialize<IvsResultMessage>(json, JsonOptions);
-                    if (ivsResult != null)
-                        OnIvsResult?.Invoke(this, ivsResult);
-                    break;
+            case "close_socket":
+                var closeSocket = JsonSerializer.Deserialize<Commands.CloseSocketMessage>(json, JsonOptions);
+                if (closeSocket != null)
+                    OnCloseSocket?.Invoke(this, closeSocket);
+                break;
 
-                case "gpio_trigger":
-                    var gpioTrigger = JsonSerializer.Deserialize<Commands.GpioTriggerMessage>(json, JsonOptions);
-                    if (gpioTrigger != null)
-                        OnGpioTrigger?.Invoke(this, gpioTrigger);
-                    break;
+            case "dg_plateinfo_result":
+                var dgResult = JsonSerializer.Deserialize<Commands.DgPlateInfoResultMessage>(json, JsonOptions);
+                if (dgResult != null)
+                    OnDgPlateInfoResult?.Invoke(this, dgResult);
+                break;
 
-                case "offline_status_change":
-                    var offlineStatus = JsonSerializer.Deserialize<Commands.OfflineStatusChangeMessage>(json, JsonOptions);
-                    if (offlineStatus != null)
-                        OnOfflineStatusChange?.Invoke(this, offlineStatus);
-                    break;
+            case "common_alarm_result":
+                var alarmResult = JsonSerializer.Deserialize<Commands.CommonAlarmResultMessage>(json, JsonOptions);
+                if (alarmResult != null)
+                    OnCommonAlarmResult?.Invoke(this, alarmResult);
+                break;
 
-                case "close_socket":
-                    var closeSocket = JsonSerializer.Deserialize<Commands.CloseSocketMessage>(json, JsonOptions);
-                    if (closeSocket != null)
-                        OnCloseSocket?.Invoke(this, closeSocket);
-                    break;
-
-                case "dg_plateinfo_result":
-                    var dgResult = JsonSerializer.Deserialize<Commands.DgPlateInfoResultMessage>(json, JsonOptions);
-                    if (dgResult != null)
-                        OnDgPlateInfoResult?.Invoke(this, dgResult);
-                    break;
-
-                case "common_alarm_result":
-                    var alarmResult = JsonSerializer.Deserialize<Commands.CommonAlarmResultMessage>(json, JsonOptions);
-                    if (alarmResult != null)
-                        OnCommonAlarmResult?.Invoke(this, alarmResult);
-                    break;
-
-                case "opensdk_push_message":
-                    var pushMsg = JsonSerializer.Deserialize<Commands.OpenSdkPushMessage>(json, JsonOptions);
-                    if (pushMsg != null)
-                        OnOpenSdkPushMessage?.Invoke(this, pushMsg);
-                    break;
-            }
-        }
-        catch
-        {
-            // 忽略解析错误
+            case "opensdk_push_message":
+                var pushMsg = JsonSerializer.Deserialize<Commands.OpenSdkPushMessage>(json, JsonOptions);
+                if (pushMsg != null)
+                    OnOpenSdkPushMessage?.Invoke(this, pushMsg);
+                break;
         }
     }
 
