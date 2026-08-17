@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Test/Test.csproj" Id="fc0745e5-613e-4dd3-8678-ff02717acf0b" />
+  <Project Path="ZsSdk/ZsSdk.csproj" />
+</Solution>
