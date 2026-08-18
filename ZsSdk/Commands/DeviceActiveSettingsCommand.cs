@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置设备有效时间请求
 /// </summary>
-public class SetDeviceActiveSettingsRequest : BaseRequest, IRequest<SetDeviceActiveSettingsResponse>
+public class SetDeviceActiveSettingsRequest : BaseRequest, IRequest<SetDeviceActiveSettingsRequest, SetDeviceActiveSettingsResponse>
 {
     public SetDeviceActiveSettingsRequest()
     {
@@ -68,7 +68,7 @@ public class DeviceActiveStatusState
 /// <summary>
 /// 获取设备有效时间请求
 /// </summary>
-public class GetDeviceActiveSettingsRequest : BaseRequest, IRequest<GetDeviceActiveSettingsResponse>
+public class GetDeviceActiveSettingsRequest : BaseRequest, IRequest<GetDeviceActiveSettingsRequest, GetDeviceActiveSettingsResponse>
 {
     public GetDeviceActiveSettingsRequest()
     {

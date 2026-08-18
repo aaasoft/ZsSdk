@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 通知在线消息请求
 /// </summary>
-public class ResponseOnlineRequest : BaseRequest, IRequest<ResponseOnlineResponse>
+public class ResponseOnlineRequest : BaseRequest, IRequest<ResponseOnlineRequest,ResponseOnlineResponse>
 {
     public ResponseOnlineRequest()
     {

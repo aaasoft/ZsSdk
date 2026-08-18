@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 配置透明通道请求
 /// </summary>
-public class TtransmissionRequest : BaseRequest, IRequest<TtransmissionResponse>
+public class TtransmissionRequest : BaseRequest, IRequest<TtransmissionRequest,TtransmissionResponse>
 {
     public TtransmissionRequest()
     {

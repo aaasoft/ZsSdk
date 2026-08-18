@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置设备名称请求
 /// </summary>
-public class SetDevNameRequest : BaseRequest, IRequest<SetDevNameResponse>
+public class SetDevNameRequest : BaseRequest, IRequest<SetDevNameRequest,SetDevNameResponse>
 {
     public SetDevNameRequest()
     {

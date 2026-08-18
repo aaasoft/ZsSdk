@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取算法识别参数请求
 /// </summary>
-public class GetAlgResultParaRequest : BaseRequest, IRequest<GetAlgResultParaResponse>
+public class GetAlgResultParaRequest : BaseRequest, IRequest<GetAlgResultParaRequest, GetAlgResultParaResponse>
 {
     public GetAlgResultParaRequest()
     {
@@ -26,7 +26,7 @@ public class GetAlgResultParaResponse : BaseResponse
 /// <summary>
 /// 设置算法识别参数请求
 /// </summary>
-public class SetAlgResultParaRequest : BaseRequest, IRequest<SetAlgResultParaResponse>
+public class SetAlgResultParaRequest : BaseRequest, IRequest<SetAlgResultParaRequest, SetAlgResultParaResponse>
 {
     public SetAlgResultParaRequest()
     {

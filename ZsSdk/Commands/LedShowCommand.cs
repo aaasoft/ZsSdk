@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置LED显示内容请求
 /// </summary>
-public class SetLedShowRequest : BaseRequest, IRequest<SetLedShowResponse>
+public class SetLedShowRequest : BaseRequest, IRequest<SetLedShowRequest,SetLedShowResponse>
 {
     public SetLedShowRequest()
     {
@@ -27,7 +27,7 @@ public class SetLedShowResponse : BaseResponse
 /// <summary>
 /// 获取LED显示内容请求
 /// </summary>
-public class GetLedShowRequest : BaseRequest, IRequest<GetLedShowResponse>
+public class GetLedShowRequest : BaseRequest, IRequest<GetLedShowRequest,GetLedShowResponse>
 {
     public GetLedShowRequest()
     {
@@ -47,7 +47,7 @@ public class GetLedShowResponse : BaseResponse
 /// <summary>
 /// 获取LED数据传输使用串口号请求
 /// </summary>
-public class GetLedSerialPortRequest : BaseRequest, IRequest<GetLedSerialPortResponse>
+public class GetLedSerialPortRequest : BaseRequest, IRequest<GetLedSerialPortRequest,GetLedSerialPortResponse>
 {
     public GetLedSerialPortRequest()
     {
@@ -70,7 +70,7 @@ public class GetLedSerialPortResponse : BaseResponse
 /// <summary>
 /// 设置LED数据传输使用串口号请求
 /// </summary>
-public class SetLedSerialPortRequest : BaseRequest, IRequest<SetLedSerialPortResponse>
+public class SetLedSerialPortRequest : BaseRequest, IRequest<SetLedSerialPortRequest,SetLedSerialPortResponse>
 {
     public SetLedSerialPortRequest()
     {

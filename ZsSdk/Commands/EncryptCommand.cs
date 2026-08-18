@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取加密方式请求
 /// </summary>
-public class GetEmsRequest : BaseRequest, IRequest<GetEmsResponse>
+public class GetEmsRequest : BaseRequest, IRequest<GetEmsRequest, GetEmsResponse>
 {
     public GetEmsRequest()
     {
@@ -41,7 +41,7 @@ public class GetEmsResponse : BaseResponse
 /// <summary>
 /// 获取用户密码请求
 /// </summary>
-public class GetEncryptKeyRequest : BaseRequest, IRequest<GetEncryptKeyResponse>
+public class GetEncryptKeyRequest : BaseRequest, IRequest<GetEncryptKeyRequest, GetEncryptKeyResponse>
 {
     public GetEncryptKeyRequest()
     {
@@ -73,7 +73,7 @@ public class GetEncryptKeyResponse : BaseResponse
 /// <summary>
 /// 重新设置用户密码请求
 /// </summary>
-public class ResetEncryptKeyRequest : BaseRequest, IRequest<ResetEncryptKeyResponse>
+public class ResetEncryptKeyRequest : BaseRequest, IRequest<ResetEncryptKeyRequest,ResetEncryptKeyResponse>
 {
     public ResetEncryptKeyRequest()
     {
@@ -105,7 +105,7 @@ public class ResetEncryptKeyResponse : BaseResponse
 /// <summary>
 /// 修改用户密码请求
 /// </summary>
-public class ChangeEncryptKeyRequest : BaseRequest, IRequest<ChangeEncryptKeyResponse>
+public class ChangeEncryptKeyRequest : BaseRequest, IRequest<ChangeEncryptKeyRequest,ChangeEncryptKeyResponse>
 {
     public ChangeEncryptKeyRequest()
     {
@@ -137,7 +137,7 @@ public class ChangeEncryptKeyResponse : BaseResponse
 /// <summary>
 /// 开启是否加密请求
 /// </summary>
-public class EnableEncryptRequest : BaseRequest, IRequest<EnableEncryptResponse>
+public class EnableEncryptRequest : BaseRequest, IRequest<EnableEncryptRequest,EnableEncryptResponse>
 {
     public EnableEncryptRequest()
     {

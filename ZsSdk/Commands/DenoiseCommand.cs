@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取降噪参数请求
 /// </summary>
-public class GetDenoiseRequest : BaseRequest, IRequest<GetDenoiseResponse>
+public class GetDenoiseRequest : BaseRequest, IRequest<GetDenoiseRequest, GetDenoiseResponse>
 {
     public GetDenoiseRequest()
     {
@@ -26,7 +26,7 @@ public class GetDenoiseResponse : BaseResponse
 /// <summary>
 /// 设置降噪参数请求
 /// </summary>
-public class SetDenoiseRequest : BaseRequest, IRequest<SetDenoiseResponse>
+public class SetDenoiseRequest : BaseRequest, IRequest<SetDenoiseRequest, SetDenoiseResponse>
 {
     public SetDenoiseRequest()
     {

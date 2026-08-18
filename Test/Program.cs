@@ -50,6 +50,14 @@ await client.ConnectAsync();
     else
         Console.WriteLine($"获取设备序列号失败，原因：{rep.StateCode} {rep.ErrorMsg}");
 }
+// 获取设备时间
+{
+    var rep = await client.SendRequestAsync(new GetDeviceTimestampRequest());
+    if (rep.IsSuccessStatusCode)
+        Console.WriteLine($"设备时间: {new EpochTime(rep.Timestamp).DateTime.ToLocalTime():yyyy-MM-dd HH:mm:ss}");
+    else
+        Console.WriteLine($"获取设备时间失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
 // 配置识别结果推送
 {
     var rep = await client.SendRequestAsync(
@@ -64,23 +72,6 @@ await client.ConnectAsync();
     else
         Console.WriteLine($"配置识别结果推送失败，原因：{rep.StateCode} {rep.ErrorMsg}");
 }
-// 获取设备时间
-{
-    var rep = await client.SendRequestAsync(new GetDeviceTimestampRequest());
-    if (rep.IsSuccessStatusCode)
-        Console.WriteLine($"设备时间: {new LongEpochTime(rep.Timestamp).DateTime:yyyy-MM-dd HH:mm:ss}");
-    else
-        Console.WriteLine($"获取设备时间失败，原因：{rep.StateCode} {rep.ErrorMsg}");
-}
-/*
-// 获取设备时间
-{
-    var rep = await client.SendRequestAsync(new GetProductInfoRequest());
-    if (rep.IsSuccessStatusCode)
-        Console.WriteLine($"设备时间: {new LongEpochTime(rep.Timestamp).DateTime:yyyy-MM-dd HH:mm:ss}");
-    else
-        Console.WriteLine($"获取设备时间失败，原因：{rep.StateCode} {rep.ErrorMsg}");
-}
-*/
+
 // 保持程序运行
 await Task.Delay(Timeout.Infinite);

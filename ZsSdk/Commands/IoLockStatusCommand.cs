@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置GPIO口锁定状态请求
 /// </summary>
-public class SetIoLockStatusRequest : BaseRequest, IRequest<SetIoLockStatusResponse>
+public class SetIoLockStatusRequest : BaseRequest, IRequest<SetIoLockStatusRequest,SetIoLockStatusResponse>
 {
     public SetIoLockStatusRequest()
     {
@@ -45,7 +45,7 @@ public class SetIoLockStatusResponse : BaseResponse
 /// <summary>
 /// 获取GPIO口锁定状态请求
 /// </summary>
-public class GetIoLockStatusRequest : BaseRequest, IRequest<GetIoLockStatusResponse>
+public class GetIoLockStatusRequest : BaseRequest, IRequest<GetIoLockStatusRequest,GetIoLockStatusResponse>
 {
     public GetIoLockStatusRequest()
     {

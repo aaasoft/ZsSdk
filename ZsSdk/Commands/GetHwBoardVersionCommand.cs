@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取设备硬件版本信息请求
 /// </summary>
-public class GetHwBoardVersionRequest : BaseRequest, IRequest<GetHwBoardVersionResponse>
+public class GetHwBoardVersionRequest : BaseRequest, IRequest<GetHwBoardVersionRequest,GetHwBoardVersionResponse>
 {
     public GetHwBoardVersionRequest()
     {

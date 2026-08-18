@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 修改账号密码请求
 /// </summary>
-public class SetUserPasswordRequest : BaseRequest, IRequest<SetUserPasswordResponse>
+public class SetUserPasswordRequest : BaseRequest, IRequest<SetUserPasswordRequest, SetUserPasswordResponse>
 {
     public SetUserPasswordRequest()
     {

@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 通过R3获取指定伴侣机的配置信息请求
 /// </summary>
-public class UserGetMateInfoRequest : BaseRequest, IRequest<UserGetMateInfoResponse>
+public class UserGetMateInfoRequest : BaseRequest, IRequest<UserGetMateInfoRequest,UserGetMateInfoResponse>
 {
     public UserGetMateInfoRequest()
     {
@@ -26,7 +26,7 @@ public class UserGetMateInfoResponse : BaseResponse
 /// <summary>
 /// 通过R3获取伴侣机的Rtsp代理信息请求
 /// </summary>
-public class UserGetRtspInfoRequest : BaseRequest, IRequest<UserGetRtspInfoResponse>
+public class UserGetRtspInfoRequest : BaseRequest, IRequest<UserGetRtspInfoRequest,UserGetRtspInfoResponse>
 {
     public UserGetRtspInfoRequest()
     {
@@ -61,7 +61,7 @@ public class UserGetRtspInfoResponse : BaseResponse
 /// <summary>
 /// 通过R3获取伴侣机的语音代理信息请求
 /// </summary>
-public class UserRequestTalkbackRequest : BaseRequest, IRequest<UserRequestTalkbackResponse>
+public class UserRequestTalkbackRequest : BaseRequest, IRequest<UserRequestTalkbackRequest,UserRequestTalkbackResponse>
 {
     public UserRequestTalkbackRequest()
     {
@@ -102,7 +102,7 @@ public class UserRequestTalkbackResponse : BaseResponse
 /// <summary>
 /// 通过Tcp获取日志请求
 /// </summary>
-public class LogSearchRequest : BaseRequest, IRequest<LogSearchResponse>
+public class LogSearchRequest : BaseRequest, IRequest<LogSearchRequest,LogSearchResponse>
 {
     public LogSearchRequest()
     {
@@ -128,7 +128,7 @@ public class LogSearchResponse : BaseResponse
 /// <summary>
 /// 设置Rg人车滞留事件上报使能请求
 /// </summary>
-public class StayEventEnableRequest : BaseRequest, IRequest<StayEventEnableResponse>
+public class StayEventEnableRequest : BaseRequest, IRequest<StayEventEnableRequest,StayEventEnableResponse>
 {
     public StayEventEnableRequest()
     {

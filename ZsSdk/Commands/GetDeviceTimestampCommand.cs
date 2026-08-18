@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取设备当前时间戳请求
 /// </summary>
-public class GetDeviceTimestampRequest : BaseRequest, IRequest<GetDeviceTimestampResponse>
+public class GetDeviceTimestampRequest : BaseRequest, IRequest<GetDeviceTimestampRequest,GetDeviceTimestampResponse>
 {
     public GetDeviceTimestampRequest()
     {
@@ -23,5 +23,5 @@ public class GetDeviceTimestampResponse : BaseResponse
     /// 时间（格林威治时间，单位秒）
     /// </summary>
     [JsonPropertyName("timestamp")]
-    public long Timestamp { get; set; }
+    public int Timestamp { get; set; }
 }

@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 云台控制请求
 /// </summary>
-public class SetCloudCtrlRequest : BaseRequest, IRequest<SetCloudCtrlResponse>
+public class SetCloudCtrlRequest : BaseRequest, IRequest<SetCloudCtrlRequest, SetCloudCtrlResponse>
 {
     public SetCloudCtrlRequest()
     {

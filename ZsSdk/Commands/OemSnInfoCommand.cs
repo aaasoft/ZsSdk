@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置客户定制SN序列号请求
 /// </summary>
-public class SetOemSnInfoRequest : BaseRequest, IRequest<SetOemSnInfoResponse>
+public class SetOemSnInfoRequest : BaseRequest, IRequest<SetOemSnInfoRequest,SetOemSnInfoResponse>
 {
     public SetOemSnInfoRequest()
     {
@@ -39,7 +39,7 @@ public class SetOemSnInfoResponse : BaseResponse
 /// <summary>
 /// 获取客户定制SN序列号请求
 /// </summary>
-public class GetOemSnInfoRequest : BaseRequest, IRequest<GetOemSnInfoResponse>
+public class GetOemSnInfoRequest : BaseRequest, IRequest<GetOemSnInfoRequest,GetOemSnInfoResponse>
 {
     public GetOemSnInfoRequest()
     {

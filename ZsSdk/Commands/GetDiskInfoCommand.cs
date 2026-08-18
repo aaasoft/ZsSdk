@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取存储设备信息请求
 /// </summary>
-public class GetDiskInfoRequest : BaseRequest, IRequest<GetDiskInfoResponse>
+public class GetDiskInfoRequest : BaseRequest, IRequest<GetDiskInfoRequest,GetDiskInfoResponse>
 {
     public GetDiskInfoRequest()
     {

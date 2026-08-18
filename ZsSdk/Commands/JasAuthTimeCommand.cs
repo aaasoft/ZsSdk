@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 建安顺APP过期设置请求
 /// </summary>
-public class JasAuthTimeRequest : BaseRequest, IRequest<JasAuthTimeResponse>
+public class JasAuthTimeRequest : BaseRequest, IRequest<JasAuthTimeRequest,JasAuthTimeResponse>
 {
     public JasAuthTimeRequest()
     {

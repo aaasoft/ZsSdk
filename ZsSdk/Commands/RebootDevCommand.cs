@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 重启设备请求
 /// </summary>
-public class RebootDevRequest : BaseRequest, IRequest<RebootDevResponse>
+public class RebootDevRequest : BaseRequest, IRequest<RebootDevRequest,RebootDevResponse>
 {
     public RebootDevRequest()
     {

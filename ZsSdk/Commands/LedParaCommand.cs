@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置LED参数请求
 /// </summary>
-public class SetLedParaRequest : BaseRequest, IRequest<SetLedParaResponse>
+public class SetLedParaRequest : BaseRequest, IRequest<SetLedParaRequest,SetLedParaResponse>
 {
     public SetLedParaRequest()
     {
@@ -27,7 +27,7 @@ public class SetLedParaResponse : BaseResponse
 /// <summary>
 /// 获取LED参数请求
 /// </summary>
-public class GetLedParaRequest : BaseRequest, IRequest<GetLedParaResponse>
+public class GetLedParaRequest : BaseRequest, IRequest<GetLedParaRequest,GetLedParaResponse>
 {
     public GetLedParaRequest()
     {

@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
@@ -6,7 +5,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置当前配置为用户默认配置请求
 /// </summary>
-public class SetUserDefaultCfgRequest : BaseRequest, IRequest<SetUserDefaultCfgResponse>
+public class SetUserDefaultCfgRequest : BaseRequest, IRequest<SetUserDefaultCfgRequest, SetUserDefaultCfgResponse>
 {
     public SetUserDefaultCfgRequest()
     {

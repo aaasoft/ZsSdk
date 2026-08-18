@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 恢复设备默认配置请求
 /// </summary>
-public class SetFactoryDefaultRequest : BaseRequest, IRequest<SetFactoryDefaultResponse>
+public class SetFactoryDefaultRequest : BaseRequest, IRequest<SetFactoryDefaultRequest,SetFactoryDefaultResponse>
 {
     public SetFactoryDefaultRequest()
     {

@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
@@ -6,7 +5,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 自动聚焦请求
 /// </summary>
-public class AutoFocusRequest : BaseRequest, IRequest<AutoFocusResponse>
+public class AutoFocusRequest : BaseRequest, IRequest<AutoFocusRequest, AutoFocusResponse>
 {
     public AutoFocusRequest()
     {

@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取设备版本信息请求
 /// </summary>
-public class GetProductInfoRequest : BaseRequest, IRequest<GetProductInfoResponse>
+public class GetProductInfoRequest : BaseRequest, IRequest<GetProductInfoRequest,GetProductInfoResponse>
 {
     public GetProductInfoRequest()
     {

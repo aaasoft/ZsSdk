@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取设备4G参数信息请求
 /// </summary>
-public class Get4GParamRequest : BaseRequest, IRequest<Get4GParamResponse>
+public class Get4GParamRequest : BaseRequest, IRequest<Get4GParamRequest,Get4GParamResponse>
 {
     public Get4GParamRequest()
     {
@@ -26,7 +26,7 @@ public class Get4GParamResponse : BaseResponse
 /// <summary>
 /// 设置设备4G参数信息请求
 /// </summary>
-public class Set4GParamRequest : BaseRequest, IRequest<Set4GParamResponse>
+public class Set4GParamRequest : BaseRequest, IRequest<Set4GParamRequest,Set4GParamResponse>
 {
     public Set4GParamRequest()
     {

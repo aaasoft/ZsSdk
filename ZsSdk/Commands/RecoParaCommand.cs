@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取识别区域参数请求
 /// </summary>
-public class GetRecoParaRequest : BaseRequest, IRequest<GetRecoParaResponse>
+public class GetRecoParaRequest : BaseRequest, IRequest<GetRecoParaRequest,GetRecoParaResponse>
 {
     public GetRecoParaRequest()
     {
@@ -35,7 +35,7 @@ public class RecoParaBody
 /// <summary>
 /// 设置识别区域参数请求
 /// </summary>
-public class SetRecoParaRequest : BaseRequest, IRequest<SetRecoParaResponse>
+public class SetRecoParaRequest : BaseRequest, IRequest<SetRecoParaRequest,SetRecoParaResponse>
 {
     public SetRecoParaRequest()
     {

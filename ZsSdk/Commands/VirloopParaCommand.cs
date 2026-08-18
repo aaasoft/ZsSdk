@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取虚拟线圈参数请求
 /// </summary>
-public class GetVirloopParaRequest : BaseRequest, IRequest<GetVirloopParaResponse>
+public class GetVirloopParaRequest : BaseRequest, IRequest<GetVirloopParaRequest,GetVirloopParaResponse>
 {
     public GetVirloopParaRequest()
     {
@@ -35,7 +35,7 @@ public class VirloopParaBody
 /// <summary>
 /// 设置虚拟线圈参数请求
 /// </summary>
-public class SetVirloopParaRequest : BaseRequest, IRequest<SetVirloopParaResponse>
+public class SetVirloopParaRequest : BaseRequest, IRequest<SetVirloopParaRequest,SetVirloopParaResponse>
 {
     public SetVirloopParaRequest()
     {

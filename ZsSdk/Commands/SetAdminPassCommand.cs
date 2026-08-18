@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 修改设备admin密码请求
 /// </summary>
-public class SetAdminPassRequest : BaseRequest, IRequest<SetAdminPassResponse>
+public class SetAdminPassRequest : BaseRequest, IRequest<SetAdminPassRequest,SetAdminPassResponse>
 {
     public SetAdminPassRequest()
     {

@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 注册OpenSDK监听推送请求
 /// </summary>
-public class RegisterPushChannelRequest : BaseRequest, IRequest<RegisterPushChannelResponse>
+public class RegisterPushChannelRequest : BaseRequest, IRequest<RegisterPushChannelRequest,RegisterPushChannelResponse>
 {
     public RegisterPushChannelRequest()
     {
@@ -51,7 +51,7 @@ public class OpenSdkPushMessage
 /// <summary>
 /// 请求OpenSDK Push请求
 /// </summary>
-public class PushMsgToOpenSdkRequest : BaseRequest, IRequest<PushMsgToOpenSdkResponse>
+public class PushMsgToOpenSdkRequest : BaseRequest, IRequest<PushMsgToOpenSdkRequest,PushMsgToOpenSdkResponse>
 {
     public PushMsgToOpenSdkRequest()
     {

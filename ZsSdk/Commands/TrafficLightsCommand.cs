@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取交通灯状态请求
 /// </summary>
-public class GetTrafficLightsRequest : BaseRequest, IRequest<GetTrafficLightsResponse>
+public class GetTrafficLightsRequest : BaseRequest, IRequest<GetTrafficLightsRequest,GetTrafficLightsResponse>
 {
     public GetTrafficLightsRequest()
     {
@@ -56,7 +56,7 @@ public class TrafficLightsParam
 /// <summary>
 /// 设置交通灯功能请求
 /// </summary>
-public class SetTrafficLightsRequest : BaseRequest, IRequest<SetTrafficLightsResponse>
+public class SetTrafficLightsRequest : BaseRequest, IRequest<SetTrafficLightsRequest,SetTrafficLightsResponse>
 {
     public SetTrafficLightsRequest()
     {

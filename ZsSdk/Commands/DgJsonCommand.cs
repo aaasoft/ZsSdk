@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设备组网请求基类
 /// </summary>
-public class DgJsonRequest : BaseRequest, IRequest<DgJsonResponse>
+public class DgJsonRequest : BaseRequest, IRequest<DgJsonRequest, DgJsonResponse>
 {
     public DgJsonRequest()
     {

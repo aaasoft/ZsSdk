@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 操作白名单请求
 /// </summary>
-public class WhiteListOperatorRequest : BaseRequest, IRequest<WhiteListOperatorResponse>
+public class WhiteListOperatorRequest : BaseRequest, IRequest<WhiteListOperatorRequest, WhiteListOperatorResponse>
 {
     public WhiteListOperatorRequest()
     {

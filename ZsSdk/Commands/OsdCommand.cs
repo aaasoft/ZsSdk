@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置用户自定义OSD请求
 /// </summary>
-public class SetOsdParaRequest : BaseRequest, IRequest<SetOsdParaResponse>
+public class SetOsdParaRequest : BaseRequest, IRequest<SetOsdParaRequest,SetOsdParaResponse>
 {
     public SetOsdParaRequest()
     {

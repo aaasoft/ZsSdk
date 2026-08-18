@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置LCD广告音量请求
 /// </summary>
-public class SetAdVoiceRequest : BaseRequest, IRequest<SetAdVoiceResponse>
+public class SetAdVoiceRequest : BaseRequest, IRequest<SetAdVoiceRequest,SetAdVoiceResponse>
 {
     public SetAdVoiceRequest()
     {
@@ -36,7 +36,7 @@ public class SetAdVoiceResponse : BaseResponse
 /// <summary>
 /// 查询LCD广告音量请求
 /// </summary>
-public class GetAdVoiceRequest : BaseRequest, IRequest<GetAdVoiceResponse>
+public class GetAdVoiceRequest : BaseRequest, IRequest<GetAdVoiceRequest,GetAdVoiceResponse>
 {
     public GetAdVoiceRequest()
     {
@@ -56,7 +56,7 @@ public class GetAdVoiceResponse : BaseResponse
 /// <summary>
 /// 设置LCD背光亮度请求
 /// </summary>
-public class SetLcdBrightRequest : BaseRequest, IRequest<SetLcdBrightResponse>
+public class SetLcdBrightRequest : BaseRequest, IRequest<SetLcdBrightRequest,SetLcdBrightResponse>
 {
     public SetLcdBrightRequest()
     {
@@ -92,7 +92,7 @@ public class SetLcdBrightResponse : BaseResponse
 /// <summary>
 /// 查询LCD背光参数请求
 /// </summary>
-public class GetLcdBrightRequest : BaseRequest, IRequest<GetLcdBrightResponse>
+public class GetLcdBrightRequest : BaseRequest, IRequest<GetLcdBrightRequest,GetLcdBrightResponse>
 {
     public GetLcdBrightRequest()
     {
@@ -112,7 +112,7 @@ public class GetLcdBrightResponse : BaseResponse
 /// <summary>
 /// LCD推送消息请求
 /// </summary>
-public class AdPushMessageRequest : BaseRequest, IRequest<AdPushMessageResponse>
+public class AdPushMessageRequest : BaseRequest, IRequest<AdPushMessageRequest,AdPushMessageResponse>
 {
     public AdPushMessageRequest()
     {

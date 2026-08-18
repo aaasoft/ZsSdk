@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置用户私有数据请求
 /// </summary>
-public class SetUserDataRequest : BaseRequest, IRequest<SetUserDataResponse>
+public class SetUserDataRequest : BaseRequest, IRequest<SetUserDataRequest,SetUserDataResponse>
 {
     public SetUserDataRequest()
     {
@@ -39,7 +39,7 @@ public class SetUserDataResponse : BaseResponse
 /// <summary>
 /// 获取用户私有数据请求
 /// </summary>
-public class GetUserDataRequest : BaseRequest, IRequest<GetUserDataResponse>
+public class GetUserDataRequest : BaseRequest, IRequest<GetUserDataRequest,GetUserDataResponse>
 {
     public GetUserDataRequest()
     {

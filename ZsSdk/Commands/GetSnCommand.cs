@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取设备序列号请求
 /// </summary>
-public class GetSnRequest : BaseRequest, IRequest<GetSnResponse>
+public class GetSnRequest : BaseRequest, IRequest<GetSnRequest,GetSnResponse>
 {
     public GetSnRequest()
     {

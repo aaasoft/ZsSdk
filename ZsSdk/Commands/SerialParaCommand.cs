@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取串口参数请求
 /// </summary>
-public class GetSerialParaRequest : BaseRequest, IRequest<GetSerialParaResponse>
+public class GetSerialParaRequest : BaseRequest, IRequest<GetSerialParaRequest,GetSerialParaResponse>
 {
     public GetSerialParaRequest()
     {
@@ -35,7 +35,7 @@ public class GetSerialParaResponse : BaseResponse
 /// <summary>
 /// 设置串口参数请求
 /// </summary>
-public class SetSerialParaRequest : BaseRequest, IRequest<SetSerialParaResponse>
+public class SetSerialParaRequest : BaseRequest, IRequest<SetSerialParaRequest,SetSerialParaResponse>
 {
     public SetSerialParaRequest()
     {

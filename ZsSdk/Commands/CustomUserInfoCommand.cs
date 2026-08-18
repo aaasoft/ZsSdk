@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取自定义信息请求
 /// </summary>
-public class GetCustomUserInfoRequest : BaseRequest, IRequest<GetCustomUserInfoResponse>
+public class GetCustomUserInfoRequest : BaseRequest, IRequest<GetCustomUserInfoRequest, GetCustomUserInfoResponse>
 {
     public GetCustomUserInfoRequest()
     {
@@ -29,7 +29,7 @@ public class GetCustomUserInfoResponse : BaseResponse
 /// <summary>
 /// 设置用户自定义信息请求
 /// </summary>
-public class SetCustomUserInfoRequest : BaseRequest, IRequest<SetCustomUserInfoResponse>
+public class SetCustomUserInfoRequest : BaseRequest, IRequest<SetCustomUserInfoRequest, SetCustomUserInfoResponse>
 {
     public SetCustomUserInfoRequest()
     {

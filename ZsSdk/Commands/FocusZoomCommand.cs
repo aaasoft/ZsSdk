@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 开始自动聚焦请求
 /// </summary>
-public class StartFocusAndZoomRequest : BaseRequest, IRequest<StartFocusAndZoomResponse>
+public class StartFocusAndZoomRequest : BaseRequest, IRequest<StartFocusAndZoomRequest,StartFocusAndZoomResponse>
 {
     public StartFocusAndZoomRequest()
     {
@@ -39,7 +39,7 @@ public class StartFocusAndZoomResponse : BaseResponse
 /// <summary>
 /// 停止自动聚焦请求
 /// </summary>
-public class StopFocusAndZoomRequest : BaseRequest, IRequest<StopFocusAndZoomResponse>
+public class StopFocusAndZoomRequest : BaseRequest, IRequest<StopFocusAndZoomRequest,StopFocusAndZoomResponse>
 {
     public StopFocusAndZoomRequest()
     {

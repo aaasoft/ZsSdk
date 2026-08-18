@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 注册脱机功能请求
 /// </summary>
-public class RegOfflineCheckRequest : BaseRequest, IRequest<OfflineCheckResponse>
+public class RegOfflineCheckRequest : BaseRequest, IRequest<RegOfflineCheckRequest,OfflineCheckResponse>
 {
     public RegOfflineCheckRequest()
     {
@@ -23,7 +23,7 @@ public class RegOfflineCheckRequest : BaseRequest, IRequest<OfflineCheckResponse
 /// <summary>
 /// 取消脱机注册请求
 /// </summary>
-public class CancelOfflineCheckRequest : BaseRequest, IRequest<OfflineCheckResponse>
+public class CancelOfflineCheckRequest : BaseRequest, IRequest<CancelOfflineCheckRequest,OfflineCheckResponse>
 {
     public CancelOfflineCheckRequest()
     {
@@ -46,7 +46,7 @@ public class OfflineCheckResponse : BaseResponse
 /// <summary>
 /// 注册脱机事件请求
 /// </summary>
-public class RegisterOfflineEventRequest : BaseRequest, IRequest<RegisterOfflineEventResponse>
+public class RegisterOfflineEventRequest : BaseRequest, IRequest<RegisterOfflineEventRequest,RegisterOfflineEventResponse>
 {
     public RegisterOfflineEventRequest()
     {
@@ -103,7 +103,7 @@ public class OfflineStatusChangeBody
 /// <summary>
 /// 获取脱机状态请求
 /// </summary>
-public class GetOfflineStatusRequest : BaseRequest, IRequest<GetOfflineStatusResponse>
+public class GetOfflineStatusRequest : BaseRequest, IRequest<GetOfflineStatusRequest,GetOfflineStatusResponse>
 {
     public GetOfflineStatusRequest()
     {

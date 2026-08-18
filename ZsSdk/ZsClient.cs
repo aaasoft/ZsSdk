@@ -157,14 +157,48 @@ public class ZsClient : IDisposable
         _pendingRequests.Clear();
     }
 
+    
     /// <summary>
-    /// 发送请求并等待响应（自动推断响应类型）
+    /// 发送请求（不等待响应）
     /// </summary>
-    /// <typeparam name="TResponse">响应类型（通过 IRequest&lt;TResponse&gt; 自动推断）</typeparam>
-    /// <param name="request">请求对象（必须实现 IRequest&lt;TResponse&gt; 接口）</param>
+    /// <typeparam name="TRequest">请求类型</typeparam>
+    /// <param name="request">请求对象</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    public async Task SendRequestWithOutResponseAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default)
+    {
+        if (_stream == null)
+            throw new InvalidOperationException("未连接到设备");
+
+        string requestJson = JsonSerializer.Serialize(request, JsonOptions);
+        byte[] packet = PacketParser.CreatePacket(requestJson, GetNextSequenceNumber());
+
+        await _stream.WriteAsync(packet, 0, packet.Length, cancellationToken);
+        await _stream.FlushAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// 发送请求并等待响应
+    /// </summary>
+    /// <typeparam name="TResponse"></typeparam>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(IRequest<TRequest, TResponse> request, CancellationToken cancellationToken = default)
+        where TRequest : BaseRequest, IRequest<TRequest, TResponse>
+        where TResponse : BaseResponse
+    {
+        return await SendRequestAsync<TRequest, TResponse>((TRequest)request, cancellationToken);
+    }
+
+    /// <summary>
+    /// 发送请求并等待响应
+    /// </summary>
+    /// <typeparam name="TRequest">请求类型</typeparam>
+    /// <typeparam name="TResponse">响应类型</typeparam>
+    /// <param name="request">请求对象</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>响应对象</returns>
-    public async Task<TResponse> SendRequestAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default) where TResponse : BaseResponse
+    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
     {
         // 从请求对象中提取ID（必须继承自BaseRequest）
         if (request is not BaseRequest baseRequest)
@@ -179,7 +213,7 @@ public class ZsClient : IDisposable
         try
         {
             // 发送请求
-            await SendRequestAsync(request, cancellationToken);
+            await SendRequestWithOutResponseAsync(request, cancellationToken);
 
             // 等待响应（使用传输超时）
             using var timeoutCts = new CancellationTokenSource(_options.TransportTimeoutMs);

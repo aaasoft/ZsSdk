@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 查找车牌信息请求
 /// </summary>
-public class SearchPlateRequest : BaseRequest, IRequest<SearchPlateResponse>
+public class SearchPlateRequest : BaseRequest, IRequest<SearchPlateRequest,SearchPlateResponse>
 {
     public SearchPlateRequest()
     {

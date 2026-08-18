@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置FTP服务启用状态请求
 /// </summary>
-public class SetVsftpdEnableRequest : BaseRequest, IRequest<SetVsftpdEnableResponse>
+public class SetVsftpdEnableRequest : BaseRequest, IRequest<SetVsftpdEnableRequest,SetVsftpdEnableResponse>
 {
     public SetVsftpdEnableRequest()
     {
@@ -39,7 +39,7 @@ public class SetVsftpdEnableResponse : BaseResponse
 /// <summary>
 /// 获取FTP服务启用状态请求
 /// </summary>
-public class GetVsftpdEnableRequest : BaseRequest, IRequest<GetVsftpdEnableResponse>
+public class GetVsftpdEnableRequest : BaseRequest, IRequest<GetVsftpdEnableRequest,GetVsftpdEnableResponse>
 {
     public GetVsftpdEnableRequest()
     {
