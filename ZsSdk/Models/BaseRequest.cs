@@ -7,6 +7,8 @@ namespace ZsSdk.Models;
 /// </summary>
 public class BaseRequest
 {
+    private static int _sequence;
+
     /// <summary>
     /// 命令字符串
     /// </summary>
@@ -14,16 +16,17 @@ public class BaseRequest
     public string Cmd { get; set; } = string.Empty;
 
     /// <summary>
-    /// 序列字符串（唯一），自动生成，长度小于30
+    /// 序列字符串（唯一），自动生成，10位数字字符串
     /// </summary>
     [JsonPropertyName("id")]
     public string Id { get; set; } = GenerateId();
 
     /// <summary>
-    /// 生成唯一ID（8位随机字符串）
+    /// 生成唯一ID（0到Int32.MaxValue自增，格式化为10位字符串）
     /// </summary>
     private static string GenerateId()
     {
-        return Guid.NewGuid().ToString("N")[..8];
+        int value = Interlocked.Increment(ref _sequence);
+        return value.ToString("D10");
     }
 }
