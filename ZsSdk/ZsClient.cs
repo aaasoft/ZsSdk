@@ -133,9 +133,7 @@ public class ZsClient : IDisposable
             _ = SendHeartbeatLoopAsync(_clientCts.Token);
 
             //读取设备序列号来判断是否连接能正常响应命令
-            var rep = await SendRequestAsync(new Commands.GetSnRequest());
-            if (!rep.IsSuccessStatusCode)
-                throw new IOException(rep.ErrorMsg);
+            _ = await SendRequestAsync(new Commands.GetSnRequest());
         }
         catch
         {
@@ -212,12 +210,10 @@ public class ZsClient : IDisposable
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>响应对象</returns>
     public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : BaseRequest
+        where TResponse : BaseResponse
     {
-        // 从请求对象中提取ID（必须继承自BaseRequest）
-        if (request is not BaseRequest baseRequest)
-            throw new InvalidOperationException("请求对象必须继承自BaseRequest");
-
-        string requestId = baseRequest.Id;
+        string requestId = request.Id;
 
         // 注册待响应的请求
         var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -257,6 +253,8 @@ public class ZsClient : IDisposable
             {
                 throw new IOException($"将JSON序列化为[{typeof(TResponse).FullName}]时出错，JSON内容：{responseJson}");
             }
+            if (!response.IsSuccessStatusCode)
+                throw new IOException($"{response.StateCode} {response.ErrorMsg}");
             return response;
         }
         finally

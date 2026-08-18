@@ -2,7 +2,6 @@ using System.Text;
 using Epoch.net;
 using ZsSdk;
 using ZsSdk.Commands;
-using ZsSdk.Models;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -47,66 +46,80 @@ client.OnGpioTrigger += (sender, message) =>
 // 连接设备
 await client.ConnectAsync();
 // 获取序列号
+try
 {
     var rep = await client.SendRequestAsync(new GetSnRequest());
-    if (rep.IsSuccessStatusCode)
-        Console.WriteLine($"设备序列号: {rep.Value}");
-    else
-        Console.WriteLine($"获取设备序列号失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    Console.WriteLine($"设备序列号: {rep.Value}");
+
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"获取设备序列号失败，原因：{ex.Message}");
 }
 // 获取设备时间
+try
 {
     var rep = await client.SendRequestAsync(new GetDeviceTimestampRequest());
-    if (rep.IsSuccessStatusCode)
-        Console.WriteLine($"设备时间: {new EpochTime(rep.Timestamp).DateTime.ToLocalTime():yyyy-MM-dd HH:mm:ss}");
-    else
-        Console.WriteLine($"获取设备时间失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    Console.WriteLine($"设备时间: {new EpochTime(rep.Timestamp).DateTime.ToLocalTime():yyyy-MM-dd HH:mm:ss}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"获取设备时间失败，原因：{ex.Message}");
 }
 // 获取设备硬件版本
+try
 {
     var rep = await client.SendRequestAsync(new GetHwBoardVersionRequest());
-    if (rep.IsSuccessStatusCode)
-        Console.WriteLine($"设备硬件版本:{rep.Body?.BoardVersion}");
-    else
-        Console.WriteLine($"获取设备硬件版本失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    Console.WriteLine($"设备硬件版本:{rep.Body?.BoardVersion}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"获取设备硬件版本失败，原因：{ex.Message}");
 }
 // 获取设备产品版本
+try
 {
     var rep = await client.SendRequestAsync(new GetProductInfoRequest());
-    if (rep.IsSuccessStatusCode)
-        Console.WriteLine($"设备产品版本: {rep.Body?.ProductVer}");
-    else
-        Console.WriteLine($"获取设备产品版本失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    Console.WriteLine($"设备产品版本: {rep.Body?.ProductVer}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"获取设备产品版本失败，原因：{ex.Message}");
 }
 //获取GPIO输入
+for (var i = 0; i <= 1; i++)
 {
-    for (var i = 0; i <= 1; i++)
+    try
     {
         var rep = await client.SendRequestAsync(new GetGpioValueRequest()
         {
             Gpio = i
         });
-        if (rep.IsSuccessStatusCode)
-            Console.WriteLine($"GPIO输入{i}: {rep.Value}");
-        else
-            Console.WriteLine($"获取GPIO输入{i}失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+        Console.WriteLine($"GPIO输入{i}: {rep.Value}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"获取GPIO输入{i}失败，原因：{ex.Message}");
     }
 }
 //获取GPIO输出
+for (var i = 0; i <= 1; i++)
 {
-    for (var i = 0; i <= 1; i++)
+    try
     {
         var rep = await client.SendRequestAsync(new GetGpioOutValueRequest()
         {
             Gpio = i
         });
-        if (rep.IsSuccessStatusCode)
-            Console.WriteLine($"GPIO输出{i}: {rep.Value}");
-        else
-            Console.WriteLine($"获取GPIO输出{i}失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+        Console.WriteLine($"GPIO输出{i}: {rep.Value}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"获取GPIO输出{i}失败，原因：{ex.Message}");
     }
 }
 //设置GPIO输出，先通后断
+try
 {
     var rep = await client.SendRequestAsync(new IoctlRequest()
     {
@@ -114,12 +127,14 @@ await client.ConnectAsync();
         Value = 2,
         Delay = 10000
     });
-    if (rep.IsSuccessStatusCode)
-            Console.WriteLine($"设置GPIO输出，先通后断成功");
-        else
-            Console.WriteLine($"设置GPIO输出，先通后断失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    Console.WriteLine($"设置GPIO输出，先通后断成功");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"设置GPIO输出，先通后断失败，原因：{ex.Message}");
 }
 // 配置识别结果推送
+try
 {
     var rep = await client.SendRequestAsync(
         new IvsResultRequest
@@ -128,10 +143,11 @@ await client.ConnectAsync();
             Format = "json",
             Image = true
         });
-    if (rep.IsSuccessStatusCode)
-        Console.WriteLine($"已配置识别结果推送，等待车牌识别事件...");
-    else
-        Console.WriteLine($"配置识别结果推送失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    Console.WriteLine($"已配置识别结果推送，等待车牌识别事件...");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"配置识别结果推送失败，原因：{ex.Message}");
 }
 
 // 保持程序运行
