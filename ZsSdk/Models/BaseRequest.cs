@@ -22,11 +22,17 @@ public class BaseRequest
     public string Id { get; set; } = GenerateId();
 
     /// <summary>
-    /// 生成唯一ID（0到Int32.MaxValue自增，格式化为10位字符串）
+    /// 生成唯一ID（0到Int32.MaxValue自增，溢出后从1重新开始）
     /// </summary>
     private static string GenerateId()
     {
         int value = Interlocked.Increment(ref _sequence);
+        if (value < 0)
+        {
+            // 溢出时重置为1（CAS确保线程安全）
+            Interlocked.CompareExchange(ref _sequence, 1, value);
+            value = 1;
+        }
         return value.ToString("D10");
     }
 }
