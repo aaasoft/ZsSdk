@@ -16,8 +16,7 @@ public class ZsClient : IDisposable
     private readonly ZsClientOptions _options;
     private byte _sequenceNumber;
     private bool _disposed;
-    private CancellationTokenSource? _receiveCts;
-    private Task? _receiveTask;
+    private CancellationTokenSource? _clientCts;
     private Timer? _heartbeatTimer;
 
     /// <summary>
@@ -115,7 +114,7 @@ public class ZsClient : IDisposable
         }
         catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
         {
-            throw new TimeoutException($"连接超时（{_options.ConnectionTimeoutMs}ms）");
+            throw new TimeoutException($"连接超时({_options.ConnectionTimeoutMs}ms)");
         }
 
         _stream = _tcpClient.GetStream();
@@ -125,22 +124,11 @@ public class ZsClient : IDisposable
         _stream.WriteTimeout = _options.TransportTimeoutMs;
 
         // 启动后台接收循环
-        _receiveCts = new CancellationTokenSource();
-        _receiveTask = Task.Run(() => ReceiveLoopAsync(_receiveCts.Token));
+        _clientCts = new CancellationTokenSource();
+        _ = ReceiveLoopAsync(_clientCts.Token);
 
         // 启动心跳定时器（间隔为传输超时的1/3）
-        var heartbeatInterval = TimeSpan.FromMilliseconds(_options.HeartbeatIntervalMs);
-        _heartbeatTimer = new Timer(async _ =>
-        {
-            try
-            {
-                await SendHeartbeatAsync();
-            }
-            catch
-            {
-                // 心跳发送失败，由接收循环触发断开事件
-            }
-        }, null, heartbeatInterval, heartbeatInterval);
+        _ = SendHeartbeatLoopAsync(_clientCts.Token);
     }
 
     /// <summary>
@@ -152,9 +140,9 @@ public class ZsClient : IDisposable
         _heartbeatTimer?.Dispose();
         _heartbeatTimer = null;
 
-        _receiveCts?.Cancel();
-        _receiveCts?.Dispose();
-        _receiveCts = null;
+        _clientCts?.Cancel();
+        _clientCts?.Dispose();
+        _clientCts = null;
 
         _stream?.Close();
         _tcpClient?.Close();
@@ -261,6 +249,27 @@ public class ZsClient : IDisposable
         byte[] heartbeat = PacketParser.CreateHeartbeatPacket();
         await _stream.WriteAsync(heartbeat, 0, heartbeat.Length, cancellationToken);
         await _stream.FlushAsync(cancellationToken);
+    }
+
+    private async Task SendHeartbeatLoopAsync(CancellationToken cancellationToken)
+    {
+        var heartbeatInterval = TimeSpan.FromMilliseconds(_options.HeartbeatIntervalMs);
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            await Task.Delay(heartbeatInterval,cancellationToken);
+            try
+            {
+                await SendHeartbeatAsync();
+            }
+            catch(OperationCanceledException)
+            {
+                return;
+            }
+            catch
+            {
+                return;
+            }
+        }
     }
 
     /// <summary>
