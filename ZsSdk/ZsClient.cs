@@ -176,6 +176,18 @@ public class ZsClient : IDisposable
     }
 
     /// <summary>
+    /// 发送请求并等待响应（自动推断响应类型）
+    /// </summary>
+    /// <typeparam name="TResponse">响应类型（通过 IRequest&lt;TResponse&gt; 自动推断）</typeparam>
+    /// <param name="request">请求对象（必须实现 IRequest&lt;TResponse&gt; 接口）</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>响应对象</returns>
+    public async Task<TResponse> SendRequestAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default) where TResponse : BaseResponse
+    {
+        return await SendRequestAsync<IRequest<TResponse>, TResponse>(request, cancellationToken);
+    }
+
+    /// <summary>
     /// 发送请求并等待响应（通过请求ID匹配响应）
     /// </summary>
     /// <typeparam name="TRequest">请求类型</typeparam>

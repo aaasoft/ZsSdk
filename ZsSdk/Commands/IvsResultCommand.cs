@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 配置推送数据方式请求
 /// </summary>
-public class IvsResultRequest : BaseRequest
+public class IvsResultRequest : BaseRequest, IRequest<IvsResultResponse>
 {
     public IvsResultRequest()
     {
@@ -82,7 +82,7 @@ public class TriggerRequest : BaseRequest
 /// <summary>
 /// 获取记录最大ID请求
 /// </summary>
-public class GetMaxRecIdRequest : BaseRequest
+public class GetMaxRecIdRequest : BaseRequest, IRequest<GetMaxRecIdResponse>
 {
     public GetMaxRecIdRequest()
     {
@@ -135,7 +135,7 @@ public class GetRecordRequest
 /// <summary>
 /// 获取记录图片请求
 /// </summary>
-public class GetImageRequest : BaseRequest
+public class GetImageRequest : BaseRequest, IRequest<GetImageResponse>
 {
     public GetImageRequest()
     {
@@ -164,7 +164,7 @@ public class GetImageResponse : BaseResponse
 /// <summary>
 /// 抓取当前图片请求
 /// </summary>
-public class GetSnapshotRequest : BaseRequest
+public class GetSnapshotRequest : BaseRequest, IRequest<GetSnapshotResponse>
 {
     public GetSnapshotRequest()
     {
@@ -193,7 +193,7 @@ public class GetSnapshotResponse : BaseResponse
 /// <summary>
 /// 获取视频播放URI请求
 /// </summary>
-public class GetRtspUriRequest : BaseRequest
+public class GetRtspUriRequest : BaseRequest, IRequest<GetRtspUriResponse>
 {
     public GetRtspUriRequest()
     {

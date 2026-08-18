@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置系统时间请求
 /// </summary>
-public class SetTimeRequest : BaseRequest
+public class SetTimeRequest : BaseRequest, IRequest<SetTimeResponse>
 {
     public SetTimeRequest()
     {

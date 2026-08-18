@@ -27,7 +27,7 @@ public class GpioTriggerMessage
 /// <summary>
 /// 控制IO输出请求
 /// </summary>
-public class IoctlRequest : BaseRequest
+public class IoctlRequest : BaseRequest, IRequest<IoctlResponse>
 {
     public IoctlRequest()
     {
@@ -63,7 +63,7 @@ public class IoctlResponse : BaseResponse
 /// <summary>
 /// 获取IO输入状态请求
 /// </summary>
-public class GetGpioValueRequest : BaseRequest
+public class GetGpioValueRequest : BaseRequest, IRequest<GetGpioValueResponse>
 {
     public GetGpioValueRequest()
     {
@@ -95,7 +95,7 @@ public class GetGpioValueResponse : BaseResponse
 /// <summary>
 /// 获取IO输出状态请求
 /// </summary>
-public class GetGpioOutValueRequest : BaseRequest
+public class GetGpioOutValueRequest : BaseRequest, IRequest<GetGpioOutValueResponse>
 {
     public GetGpioOutValueRequest()
     {

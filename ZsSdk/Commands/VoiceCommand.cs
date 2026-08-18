@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 语音协议请求基类
 /// </summary>
-public class PlayserverJsonRequest : BaseRequest
+public class PlayserverJsonRequest : BaseRequest, IRequest<PlayserverJsonResponse>
 {
     public PlayserverJsonRequest()
     {
@@ -238,7 +238,7 @@ public class VoicePlayFileBody : PlayserverJsonRequestBody
 /// <summary>
 /// 请求语音对讲
 /// </summary>
-public class StartTalkRequest : BaseRequest
+public class StartTalkRequest : BaseRequest, IRequest<StartTalkResponse>
 {
     public StartTalkRequest()
     {

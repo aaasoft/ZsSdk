@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置中心服务器网络参数请求
 /// </summary>
-public class SetCenterServerNetRequest : BaseRequest
+public class SetCenterServerNetRequest : BaseRequest, IRequest<SetCenterServerNetResponse>
 {
     public SetCenterServerNetRequest()
     {

@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 请求开始登录
 /// </summary>
-public class StartLoginRequest : BaseRequest
+public class StartLoginRequest : BaseRequest, IRequest<StartLoginResponse>
 {
     public StartLoginRequest()
     {
@@ -59,7 +59,7 @@ public class LoginEncryptMethod
 /// <summary>
 /// 登录认证请求
 /// </summary>
-public class LoginAuthenticationRequest : BaseRequest
+public class LoginAuthenticationRequest : BaseRequest, IRequest<LoginAuthenticationResponse>
 {
     public LoginAuthenticationRequest()
     {

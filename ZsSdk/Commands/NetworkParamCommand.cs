@@ -6,7 +6,7 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置网络参数请求
 /// </summary>
-public class SetNetworkParamRequest : BaseRequest
+public class SetNetworkParamRequest : BaseRequest, IRequest<SetNetworkParamResponse>
 {
     public SetNetworkParamRequest()
     {
@@ -27,7 +27,7 @@ public class SetNetworkParamResponse : BaseResponse
 /// <summary>
 /// 获取网络参数请求
 /// </summary>
-public class GetNetworkParamRequest : BaseRequest
+public class GetNetworkParamRequest : BaseRequest, IRequest<GetNetworkParamResponse>
 {
     public GetNetworkParamRequest()
     {
