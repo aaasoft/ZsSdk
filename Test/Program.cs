@@ -1,4 +1,5 @@
 using System.Text;
+using Epoch.net;
 using ZsSdk;
 using ZsSdk.Commands;
 using ZsSdk.Models;
@@ -39,23 +40,47 @@ client.OnIvsResult += (sender, result) =>
         File.WriteAllBytes($"ClipImg_{DateTime.Now:yyyyMMdd_HHmmss}.jpg", result.ClipImg);
 };
 
-// 连接设备（自动启动后台接收循环和心跳）
+// 连接设备
 await client.ConnectAsync();
-
-// 获取序列号（自动推断响应类型）
-var snResponse = await client.SendRequestAsync(new GetSnRequest());
-Console.WriteLine($"设备序列号: {snResponse.Value}");
-
-// 配置识别结果推送（自动推断响应类型）
-await client.SendRequestAsync(
-    new IvsResultRequest
-    {
-        Enable = true,
-        Format = "json",
-        Image = true
-    });
-
-Console.WriteLine($"已配置识别结果推送，等待车牌识别事件...");
-
+// 获取序列号
+{
+    var rep = await client.SendRequestAsync(new GetSnRequest());
+    if (rep.IsSuccessStatusCode)
+        Console.WriteLine($"设备序列号: {rep.Value}");
+    else
+        Console.WriteLine($"获取设备序列号失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
+// 配置识别结果推送
+{
+    var rep = await client.SendRequestAsync(
+        new IvsResultRequest
+        {
+            Enable = true,
+            Format = "json",
+            Image = true
+        });
+    if (rep.IsSuccessStatusCode)
+        Console.WriteLine($"已配置识别结果推送，等待车牌识别事件...");
+    else
+        Console.WriteLine($"配置识别结果推送失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
+// 获取设备时间
+{
+    var rep = await client.SendRequestAsync(new GetDeviceTimestampRequest());
+    if (rep.IsSuccessStatusCode)
+        Console.WriteLine($"设备时间: {new LongEpochTime(rep.Timestamp).DateTime:yyyy-MM-dd HH:mm:ss}");
+    else
+        Console.WriteLine($"获取设备时间失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
+/*
+// 获取设备时间
+{
+    var rep = await client.SendRequestAsync(new GetProductInfoRequest());
+    if (rep.IsSuccessStatusCode)
+        Console.WriteLine($"设备时间: {new LongEpochTime(rep.Timestamp).DateTime:yyyy-MM-dd HH:mm:ss}");
+    else
+        Console.WriteLine($"获取设备时间失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
+*/
 // 保持程序运行
 await Task.Delay(Timeout.Infinite);

@@ -158,24 +158,6 @@ public class ZsClient : IDisposable
     }
 
     /// <summary>
-    /// 发送请求（不等待响应）
-    /// </summary>
-    /// <typeparam name="TRequest">请求类型</typeparam>
-    /// <param name="request">请求对象</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    public async Task SendRequestAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default)
-    {
-        if (_stream == null)
-            throw new InvalidOperationException("未连接到设备");
-
-        string requestJson = JsonSerializer.Serialize(request, JsonOptions);
-        byte[] packet = PacketParser.CreatePacket(requestJson, GetNextSequenceNumber());
-
-        await _stream.WriteAsync(packet, 0, packet.Length, cancellationToken);
-        await _stream.FlushAsync(cancellationToken);
-    }
-
-    /// <summary>
     /// 发送请求并等待响应（自动推断响应类型）
     /// </summary>
     /// <typeparam name="TResponse">响应类型（通过 IRequest&lt;TResponse&gt; 自动推断）</typeparam>

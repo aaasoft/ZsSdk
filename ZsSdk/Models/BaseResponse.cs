@@ -26,6 +26,11 @@ public class BaseResponse
     public int StateCode { get; set; }
 
     /// <summary>
+    /// 状态码是否代表成功
+    /// </summary>
+    public bool IsSuccessStatusCode => StateCode == 200;
+
+    /// <summary>
     /// 错误信息
     /// </summary>
     [JsonPropertyName("error_msg")]
