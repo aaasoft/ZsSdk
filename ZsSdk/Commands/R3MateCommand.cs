@@ -6,32 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 通过R3获取指定伴侣机的配置信息请求
 /// </summary>
-public class UserGetMateInfoRequest
+public class UserGetMateInfoRequest : BaseRequest, IRequest<UserGetMateInfoResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "user_get_mate_info";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public UserGetMateInfoRequest()
+    {
+        Cmd = "user_get_mate_info";
+    }
 }
 
 /// <summary>
 /// 通过R3获取指定伴侣机的配置信息响应
 /// </summary>
-public class UserGetMateInfoResponse
+public class UserGetMateInfoResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public List<DeviceInfo>? Body { get; set; }
 }
@@ -39,13 +26,12 @@ public class UserGetMateInfoResponse
 /// <summary>
 /// 通过R3获取伴侣机的Rtsp代理信息请求
 /// </summary>
-public class UserGetRtspInfoRequest
+public class UserGetRtspInfoRequest : BaseRequest, IRequest<UserGetRtspInfoResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "user_get_rtsp_info";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public UserGetRtspInfoRequest()
+    {
+        Cmd = "user_get_rtsp_info";
+    }
 
     [JsonPropertyName("body")]
     public UserGetRtspInfoBody? Body { get; set; }
@@ -66,20 +52,8 @@ public class UserGetRtspInfoBody
 /// <summary>
 /// 通过R3获取伴侣机的Rtsp代理信息响应
 /// </summary>
-public class UserGetRtspInfoResponse
+public class UserGetRtspInfoResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public RtspInfo? Body { get; set; }
 }
@@ -87,13 +61,12 @@ public class UserGetRtspInfoResponse
 /// <summary>
 /// 通过R3获取伴侣机的语音代理信息请求
 /// </summary>
-public class UserRequestTalkbackRequest
+public class UserRequestTalkbackRequest : BaseRequest, IRequest<UserRequestTalkbackResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "user_request_talkback";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public UserRequestTalkbackRequest()
+    {
+        Cmd = "user_request_talkback";
+    }
 
     [JsonPropertyName("body")]
     public UserRequestTalkbackBody? Body { get; set; }
@@ -120,20 +93,8 @@ public class UserRequestTalkbackBody
 /// <summary>
 /// 通过R3获取伴侣机的语音代理信息响应
 /// </summary>
-public class UserRequestTalkbackResponse
+public class UserRequestTalkbackResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public TalkbackParam? Body { get; set; }
 }
@@ -141,13 +102,12 @@ public class UserRequestTalkbackResponse
 /// <summary>
 /// 通过Tcp获取日志请求
 /// </summary>
-public class LogSearchRequest
+public class LogSearchRequest : BaseRequest, IRequest<LogSearchResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "log_search";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public LogSearchRequest()
+    {
+        Cmd = "log_search";
+    }
 
     [JsonPropertyName("body")]
     public LogQueryParam? Body { get; set; }
@@ -156,17 +116,8 @@ public class LogSearchRequest
 /// <summary>
 /// 通过Tcp获取日志响应
 /// </summary>
-public class LogSearchResponse
+public class LogSearchResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("err_msg")]
     public string? ErrMsg { get; set; }
 
@@ -177,13 +128,12 @@ public class LogSearchResponse
 /// <summary>
 /// 设置Rg人车滞留事件上报使能请求
 /// </summary>
-public class StayEventEnableRequest
+public class StayEventEnableRequest : BaseRequest, IRequest<StayEventEnableResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "stay_event_enable";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public StayEventEnableRequest()
+    {
+        Cmd = "stay_event_enable";
+    }
 
     [JsonPropertyName("body")]
     public StayEventEnableBody? Body { get; set; }
@@ -222,14 +172,6 @@ public class StayEventEnableBody
 /// <summary>
 /// 设置Rg人车滞留事件上报使能响应
 /// </summary>
-public class StayEventEnableResponse
+public class StayEventEnableResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

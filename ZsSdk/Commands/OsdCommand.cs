@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置用户自定义OSD请求
 /// </summary>
-public class SetOsdParaRequest
+public class SetOsdParaRequest : BaseRequest, IRequest<SetOsdParaResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_osd_para";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetOsdParaRequest()
+    {
+        Cmd = "set_osd_para";
+    }
 
     [JsonPropertyName("body")]
     public SetOsdParaBody? Body { get; set; }
@@ -36,17 +35,6 @@ public class SetOsdParaBody
 /// <summary>
 /// 设置用户自定义OSD响应
 /// </summary>
-public class SetOsdParaResponse
+public class SetOsdParaResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

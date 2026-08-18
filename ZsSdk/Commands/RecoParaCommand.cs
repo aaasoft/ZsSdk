@@ -6,32 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取识别区域参数请求
 /// </summary>
-public class GetRecoParaRequest
+public class GetRecoParaRequest : BaseRequest, IRequest<GetRecoParaResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_reco_para";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetRecoParaRequest()
+    {
+        Cmd = "get_reco_para";
+    }
 }
 
 /// <summary>
 /// 获取识别区域参数响应
 /// </summary>
-public class GetRecoParaResponse
+public class GetRecoParaResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public RecoParaBody? Body { get; set; }
 }
@@ -48,13 +35,12 @@ public class RecoParaBody
 /// <summary>
 /// 设置识别区域参数请求
 /// </summary>
-public class SetRecoParaRequest
+public class SetRecoParaRequest : BaseRequest, IRequest<SetRecoParaResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_reco_para";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetRecoParaRequest()
+    {
+        Cmd = "set_reco_para";
+    }
 
     [JsonPropertyName("body")]
     public RecoParaBody? Body { get; set; }
@@ -63,17 +49,6 @@ public class SetRecoParaRequest
 /// <summary>
 /// 设置识别区域参数响应
 /// </summary>
-public class SetRecoParaResponse
+public class SetRecoParaResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

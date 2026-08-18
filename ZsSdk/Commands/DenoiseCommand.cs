@@ -6,32 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取降噪参数请求
 /// </summary>
-public class GetDenoiseRequest
+public class GetDenoiseRequest : BaseRequest, IRequest<GetDenoiseResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_denoise";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetDenoiseRequest()
+    {
+        Cmd = "get_denoise";
+    }
 }
 
 /// <summary>
 /// 获取降噪参数响应
 /// </summary>
-public class GetDenoiseResponse
+public class GetDenoiseResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public DenoiseParam? Body { get; set; }
 }
@@ -39,13 +26,12 @@ public class GetDenoiseResponse
 /// <summary>
 /// 设置降噪参数请求
 /// </summary>
-public class SetDenoiseRequest
+public class SetDenoiseRequest : BaseRequest, IRequest<SetDenoiseResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_denoise";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetDenoiseRequest()
+    {
+        Cmd = "set_denoise";
+    }
 
     [JsonPropertyName("body")]
     public DenoiseParam? Body { get; set; }
@@ -54,17 +40,6 @@ public class SetDenoiseRequest
 /// <summary>
 /// 设置降噪参数响应
 /// </summary>
-public class SetDenoiseResponse
+public class SetDenoiseResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

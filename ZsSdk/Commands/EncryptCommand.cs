@@ -6,29 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取加密方式请求
 /// </summary>
-public class GetEmsRequest
+public class GetEmsRequest : BaseRequest, IRequest<GetEmsResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_ems";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetEmsRequest()
+    {
+        Cmd = "get_ems";
+    }
 }
 
 /// <summary>
 /// 获取加密方式响应
 /// </summary>
-public class GetEmsResponse
+public class GetEmsResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     /// <summary>
     /// 当前加密方式的索引
     /// </summary>
@@ -51,13 +41,12 @@ public class GetEmsResponse
 /// <summary>
 /// 获取用户密码请求
 /// </summary>
-public class GetEncryptKeyRequest
+public class GetEncryptKeyRequest : BaseRequest, IRequest<GetEncryptKeyResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_encrypt_key";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetEncryptKeyRequest()
+    {
+        Cmd = "get_encrypt_key";
+    }
 
     /// <summary>
     /// 主密钥字串（加密之后的密码）
@@ -69,17 +58,8 @@ public class GetEncryptKeyRequest
 /// <summary>
 /// 获取用户密码响应
 /// </summary>
-public class GetEncryptKeyResponse
+public class GetEncryptKeyResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("signature")]
     public string? Signature { get; set; }
 
@@ -93,13 +73,12 @@ public class GetEncryptKeyResponse
 /// <summary>
 /// 重新设置用户密码请求
 /// </summary>
-public class ResetEncryptKeyRequest
+public class ResetEncryptKeyRequest : BaseRequest, IRequest<ResetEncryptKeyResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "reset_encrypt_key";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public ResetEncryptKeyRequest()
+    {
+        Cmd = "reset_encrypt_key";
+    }
 
     /// <summary>
     /// 新设置的用户密码（加密之后的密码）
@@ -117,17 +96,8 @@ public class ResetEncryptKeyRequest
 /// <summary>
 /// 重新设置用户密码响应
 /// </summary>
-public class ResetEncryptKeyResponse
+public class ResetEncryptKeyResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("signature")]
     public string? Signature { get; set; }
 }
@@ -135,13 +105,12 @@ public class ResetEncryptKeyResponse
 /// <summary>
 /// 修改用户密码请求
 /// </summary>
-public class ChangeEncryptKeyRequest
+public class ChangeEncryptKeyRequest : BaseRequest, IRequest<ChangeEncryptKeyResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "change_encrypt_key";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public ChangeEncryptKeyRequest()
+    {
+        Cmd = "change_encrypt_key";
+    }
 
     /// <summary>
     /// 旧的用户密码（加密后的）
@@ -159,17 +128,8 @@ public class ChangeEncryptKeyRequest
 /// <summary>
 /// 修改用户密码响应
 /// </summary>
-public class ChangeEncryptKeyResponse
+public class ChangeEncryptKeyResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("signature")]
     public string? Signature { get; set; }
 }
@@ -177,13 +137,12 @@ public class ChangeEncryptKeyResponse
 /// <summary>
 /// 开启是否加密请求
 /// </summary>
-public class EnableEncryptRequest
+public class EnableEncryptRequest : BaseRequest, IRequest<EnableEncryptResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "enable_encrypt";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public EnableEncryptRequest()
+    {
+        Cmd = "enable_encrypt";
+    }
 
     /// <summary>
     /// 用户密码（加密后的）
@@ -201,17 +160,8 @@ public class EnableEncryptRequest
 /// <summary>
 /// 开启是否加密响应
 /// </summary>
-public class EnableEncryptResponse
+public class EnableEncryptResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("signature")]
     public string? Signature { get; set; }
 }

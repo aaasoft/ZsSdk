@@ -1,32 +1,24 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 通知在线消息请求
 /// </summary>
-public class ResponseOnlineRequest
+public class ResponseOnlineRequest : BaseRequest, IRequest<ResponseOnlineResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "response_online";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public ResponseOnlineRequest()
+    {
+        Cmd = "response_online";
+    }
 }
 
 /// <summary>
 /// 通知在线消息响应
 /// </summary>
-public class ResponseOnlineResponse
+public class ResponseOnlineResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }
 
 /// <summary>

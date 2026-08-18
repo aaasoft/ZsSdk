@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 云台控制请求
 /// </summary>
-public class SetCloudCtrlRequest
+public class SetCloudCtrlRequest : BaseRequest, IRequest<SetCloudCtrlResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_cloud_ctrl";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetCloudCtrlRequest()
+    {
+        Cmd = "set_cloud_ctrl";
+    }
 
     [JsonPropertyName("body")]
     public SetCloudCtrlBody? Body { get; set; }
@@ -38,17 +38,6 @@ public class SetCloudCtrlBody
 /// <summary>
 /// 云台控制响应
 /// </summary>
-public class SetCloudCtrlResponse
+public class SetCloudCtrlResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

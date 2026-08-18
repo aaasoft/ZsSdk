@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置LED显示内容请求
 /// </summary>
-public class SetLedShowRequest
+public class SetLedShowRequest : BaseRequest, IRequest<SetLedShowResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_led_show";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetLedShowRequest()
+    {
+        Cmd = "set_led_show";
+    }
 
     [JsonPropertyName("body")]
     public LedShowConfig? Body { get; set; }
@@ -21,44 +20,26 @@ public class SetLedShowRequest
 /// <summary>
 /// 设置LED显示内容响应
 /// </summary>
-public class SetLedShowResponse
+public class SetLedShowResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }
 
 /// <summary>
 /// 获取LED显示内容请求
 /// </summary>
-public class GetLedShowRequest
+public class GetLedShowRequest : BaseRequest, IRequest<GetLedShowResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_led_show";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetLedShowRequest()
+    {
+        Cmd = "get_led_show";
+    }
 }
 
 /// <summary>
 /// 获取LED显示内容响应
 /// </summary>
-public class GetLedShowResponse
+public class GetLedShowResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public LedShowConfig? Body { get; set; }
 }
@@ -66,29 +47,19 @@ public class GetLedShowResponse
 /// <summary>
 /// 获取LED数据传输使用串口号请求
 /// </summary>
-public class GetLedSerialPortRequest
+public class GetLedSerialPortRequest : BaseRequest, IRequest<GetLedSerialPortResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_led_serial_port";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetLedSerialPortRequest()
+    {
+        Cmd = "get_led_serial_port";
+    }
 }
 
 /// <summary>
 /// 获取LED数据传输使用串口号响应
 /// </summary>
-public class GetLedSerialPortResponse
+public class GetLedSerialPortResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     /// <summary>
     /// 使用的串口号（1,2，部分设备支持3）
     /// </summary>
@@ -99,13 +70,12 @@ public class GetLedSerialPortResponse
 /// <summary>
 /// 设置LED数据传输使用串口号请求
 /// </summary>
-public class SetLedSerialPortRequest
+public class SetLedSerialPortRequest : BaseRequest, IRequest<SetLedSerialPortResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_led_serial_port";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetLedSerialPortRequest()
+    {
+        Cmd = "set_led_serial_port";
+    }
 
     [JsonPropertyName("body")]
     public SetLedSerialPortBody? Body { get; set; }
@@ -126,14 +96,6 @@ public class SetLedSerialPortBody
 /// <summary>
 /// 设置LED数据传输使用串口号响应
 /// </summary>
-public class SetLedSerialPortResponse
+public class SetLedSerialPortResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

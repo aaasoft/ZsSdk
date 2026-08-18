@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 设置用户私有数据请求
 /// </summary>
-public class SetUserDataRequest
+public class SetUserDataRequest : BaseRequest, IRequest<SetUserDataResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_user_data";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetUserDataRequest()
+    {
+        Cmd = "set_user_data";
+    }
 
     [JsonPropertyName("body")]
     public SetUserDataBody? Body { get; set; }
@@ -32,44 +32,26 @@ public class SetUserDataBody
 /// <summary>
 /// 设置用户私有数据响应
 /// </summary>
-public class SetUserDataResponse
+public class SetUserDataResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }
 
 /// <summary>
 /// 获取用户私有数据请求
 /// </summary>
-public class GetUserDataRequest
+public class GetUserDataRequest : BaseRequest, IRequest<GetUserDataResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_user_data";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetUserDataRequest()
+    {
+        Cmd = "get_user_data";
+    }
 }
 
 /// <summary>
 /// 获取用户私有数据响应
 /// </summary>
-public class GetUserDataResponse
+public class GetUserDataResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public SetUserDataBody? Body { get; set; }
 }

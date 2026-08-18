@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 设置GPIO口锁定状态请求
 /// </summary>
-public class SetIoLockStatusRequest
+public class SetIoLockStatusRequest : BaseRequest, IRequest<SetIoLockStatusResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_io_lock_status";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetIoLockStatusRequest()
+    {
+        Cmd = "set_io_lock_status";
+    }
 
     [JsonPropertyName("body")]
     public List<IoLockStatus>? Body { get; set; }
@@ -38,50 +38,26 @@ public class IoLockStatus
 /// <summary>
 /// 设置GPIO口锁定状态响应
 /// </summary>
-public class SetIoLockStatusResponse
+public class SetIoLockStatusResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }
 
 /// <summary>
 /// 获取GPIO口锁定状态请求
 /// </summary>
-public class GetIoLockStatusRequest
+public class GetIoLockStatusRequest : BaseRequest, IRequest<GetIoLockStatusResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_io_lock_status";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetIoLockStatusRequest()
+    {
+        Cmd = "get_io_lock_status";
+    }
 }
 
 /// <summary>
 /// 获取GPIO口锁定状态响应
 /// </summary>
-public class GetIoLockStatusResponse
+public class GetIoLockStatusResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public List<IoLockStatus>? Body { get; set; }
 }

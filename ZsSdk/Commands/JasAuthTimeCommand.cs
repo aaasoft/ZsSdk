@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 建安顺APP过期设置请求
 /// </summary>
-public class JasAuthTimeRequest
+public class JasAuthTimeRequest : BaseRequest, IRequest<JasAuthTimeResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "jasauthtime";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public JasAuthTimeRequest()
+    {
+        Cmd = "jasauthtime";
+    }
 
     [JsonPropertyName("year")]
     public int Year { get; set; }
@@ -35,14 +35,6 @@ public class JasAuthTimeRequest
 /// <summary>
 /// 建安顺APP过期设置响应
 /// </summary>
-public class JasAuthTimeResponse
+public class JasAuthTimeResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 设置设备有效时间请求
 /// </summary>
-public class SetDeviceActiveSettingsRequest
+public class SetDeviceActiveSettingsRequest : BaseRequest, IRequest<SetDeviceActiveSettingsResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "device_active_settings";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetDeviceActiveSettingsRequest()
+    {
+        Cmd = "device_active_settings";
+    }
 
     [JsonPropertyName("body")]
     public SetDeviceActiveStatusBody? Body { get; set; }
@@ -47,17 +47,8 @@ public class SetDeviceActiveStatusBody
 /// <summary>
 /// 设置设备有效时间响应
 /// </summary>
-public class SetDeviceActiveSettingsResponse
+public class SetDeviceActiveSettingsResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public DeviceActiveStatusState? Body { get; set; }
 }
@@ -77,13 +68,12 @@ public class DeviceActiveStatusState
 /// <summary>
 /// 获取设备有效时间请求
 /// </summary>
-public class GetDeviceActiveSettingsRequest
+public class GetDeviceActiveSettingsRequest : BaseRequest, IRequest<GetDeviceActiveSettingsResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "device_active_settings";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetDeviceActiveSettingsRequest()
+    {
+        Cmd = "device_active_settings";
+    }
 
     [JsonPropertyName("body")]
     public GetDeviceActiveStatusBody? Body { get; set; }
@@ -101,17 +91,8 @@ public class GetDeviceActiveStatusBody
 /// <summary>
 /// 获取设备有效时间响应
 /// </summary>
-public class GetDeviceActiveSettingsResponse
+public class GetDeviceActiveSettingsResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public GetDeviceActiveStatusResult? Body { get; set; }
 }

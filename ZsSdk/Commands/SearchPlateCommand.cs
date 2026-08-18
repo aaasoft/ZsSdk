@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 查找车牌信息请求
 /// </summary>
-public class SearchPlateRequest
+public class SearchPlateRequest : BaseRequest, IRequest<SearchPlateResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "dg_json_request";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SearchPlateRequest()
+    {
+        Cmd = "dg_json_request";
+    }
 
     [JsonPropertyName("body")]
     public SearchPlateBody? Body { get; set; }
@@ -42,17 +41,8 @@ public class SearchPlateBody
 /// <summary>
 /// 查找车牌信息响应
 /// </summary>
-public class SearchPlateResponse
+public class SearchPlateResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public SearchPlateResponseBody? Body { get; set; }
 }

@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置LCD广告音量请求
 /// </summary>
-public class SetAdVoiceRequest
+public class SetAdVoiceRequest : BaseRequest, IRequest<SetAdVoiceResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_ad_voice";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetAdVoiceRequest()
+    {
+        Cmd = "set_ad_voice";
+    }
 
     [JsonPropertyName("body")]
     public SetAdVoiceBody? Body { get; set; }
@@ -30,50 +29,26 @@ public class SetAdVoiceBody
 /// <summary>
 /// 设置LCD广告音量响应
 /// </summary>
-public class SetAdVoiceResponse
+public class SetAdVoiceResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }
 
 /// <summary>
 /// 查询LCD广告音量请求
 /// </summary>
-public class GetAdVoiceRequest
+public class GetAdVoiceRequest : BaseRequest, IRequest<GetAdVoiceResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_ad_voice";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetAdVoiceRequest()
+    {
+        Cmd = "get_ad_voice";
+    }
 }
 
 /// <summary>
 /// 查询LCD广告音量响应
 /// </summary>
-public class GetAdVoiceResponse
+public class GetAdVoiceResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public SetAdVoiceBody? Body { get; set; }
 }
@@ -81,13 +56,12 @@ public class GetAdVoiceResponse
 /// <summary>
 /// 设置LCD背光亮度请求
 /// </summary>
-public class SetLcdBrightRequest
+public class SetLcdBrightRequest : BaseRequest, IRequest<SetLcdBrightResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_lcd_bright";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetLcdBrightRequest()
+    {
+        Cmd = "set_lcd_bright";
+    }
 
     [JsonPropertyName("body")]
     public SetLcdBrightBody? Body { get; set; }
@@ -111,50 +85,26 @@ public class SetLcdBrightBody
 /// <summary>
 /// 设置LCD背光亮度响应
 /// </summary>
-public class SetLcdBrightResponse
+public class SetLcdBrightResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }
 
 /// <summary>
 /// 查询LCD背光参数请求
 /// </summary>
-public class GetLcdBrightRequest
+public class GetLcdBrightRequest : BaseRequest, IRequest<GetLcdBrightResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_lcd_bright";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetLcdBrightRequest()
+    {
+        Cmd = "get_lcd_bright";
+    }
 }
 
 /// <summary>
 /// 查询LCD背光参数响应
 /// </summary>
-public class GetLcdBrightResponse
+public class GetLcdBrightResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public SetLcdBrightBody? Body { get; set; }
 }
@@ -162,13 +112,12 @@ public class GetLcdBrightResponse
 /// <summary>
 /// LCD推送消息请求
 /// </summary>
-public class AdPushMessageRequest
+public class AdPushMessageRequest : BaseRequest, IRequest<AdPushMessageResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "ad_push_message";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public AdPushMessageRequest()
+    {
+        Cmd = "ad_push_message";
+    }
 
     [JsonPropertyName("body")]
     public AdPushMessageBody? Body { get; set; }
@@ -225,17 +174,6 @@ public class AdPushMessageBody
 /// <summary>
 /// LCD推送消息响应
 /// </summary>
-public class AdPushMessageResponse
+public class AdPushMessageResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

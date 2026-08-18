@@ -6,32 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取存储设备信息请求
 /// </summary>
-public class GetDiskInfoRequest
+public class GetDiskInfoRequest : BaseRequest, IRequest<GetDiskInfoResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_diskinfo";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetDiskInfoRequest()
+    {
+        Cmd = "get_diskinfo";
+    }
 }
 
 /// <summary>
 /// 获取存储设备信息响应
 /// </summary>
-public class GetDiskInfoResponse
+public class GetDiskInfoResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public List<DiskInfo>? Body { get; set; }
 }

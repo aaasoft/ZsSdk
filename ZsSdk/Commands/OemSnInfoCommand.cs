@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 设置客户定制SN序列号请求
 /// </summary>
-public class SetOemSnInfoRequest
+public class SetOemSnInfoRequest : BaseRequest, IRequest<SetOemSnInfoResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_oem_sn_info";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetOemSnInfoRequest()
+    {
+        Cmd = "set_oem_sn_info";
+    }
 
     [JsonPropertyName("body")]
     public SetOemSnInfoBody? Body { get; set; }
@@ -32,47 +32,26 @@ public class SetOemSnInfoBody
 /// <summary>
 /// 设置客户定制SN序列号响应
 /// </summary>
-public class SetOemSnInfoResponse
+public class SetOemSnInfoResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }
 
 /// <summary>
 /// 获取客户定制SN序列号请求
 /// </summary>
-public class GetOemSnInfoRequest
+public class GetOemSnInfoRequest : BaseRequest, IRequest<GetOemSnInfoResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_oem_sn_info";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetOemSnInfoRequest()
+    {
+        Cmd = "get_oem_sn_info";
+    }
 }
 
 /// <summary>
 /// 获取客户定制SN序列号响应
 /// </summary>
-public class GetOemSnInfoResponse
+public class GetOemSnInfoResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public SetOemSnInfoBody? Body { get; set; }
 }

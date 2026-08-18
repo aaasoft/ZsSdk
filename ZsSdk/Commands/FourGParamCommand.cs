@@ -6,32 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取设备4G参数信息请求
 /// </summary>
-public class Get4GParamRequest
+public class Get4GParamRequest : BaseRequest, IRequest<Get4GParamResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_4g_param";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public Get4GParamRequest()
+    {
+        Cmd = "get_4g_param";
+    }
 }
 
 /// <summary>
 /// 获取设备4G参数信息响应
 /// </summary>
-public class Get4GParamResponse
+public class Get4GParamResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public FourGParam? Body { get; set; }
 }
@@ -39,13 +26,12 @@ public class Get4GParamResponse
 /// <summary>
 /// 设置设备4G参数信息请求
 /// </summary>
-public class Set4GParamRequest
+public class Set4GParamRequest : BaseRequest, IRequest<Set4GParamResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_4g_param";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public Set4GParamRequest()
+    {
+        Cmd = "set_4g_param";
+    }
 
     [JsonPropertyName("body")]
     public Set4GParamBody? Body { get; set; }
@@ -102,17 +88,6 @@ public class ApnParam
 /// <summary>
 /// 设置设备4G参数信息响应
 /// </summary>
-public class Set4GParamResponse
+public class Set4GParamResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 配置透明通道请求
 /// </summary>
-public class TtransmissionRequest
+public class TtransmissionRequest : BaseRequest, IRequest<TtransmissionResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "ttransmission";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public TtransmissionRequest()
+    {
+        Cmd = "ttransmission";
+    }
 
     /// <summary>
     /// 子命令：init初始化 uninit取消初始化 send发送数据
@@ -41,17 +41,8 @@ public class TtransmissionRequest
 /// <summary>
 /// 配置透明通道响应
 /// </summary>
-public class TtransmissionResponse
+public class TtransmissionResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     /// <summary>
     /// 子命令
     /// </summary>

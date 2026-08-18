@@ -1,33 +1,24 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 获取交通灯状态请求
 /// </summary>
-public class GetTrafficLightsRequest
+public class GetTrafficLightsRequest : BaseRequest, IRequest<GetTrafficLightsResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_traffic_lights";
+    public GetTrafficLightsRequest()
+    {
+        Cmd = "get_traffic_lights";
+    }
 }
 
 /// <summary>
 /// 获取交通灯状态响应
 /// </summary>
-public class GetTrafficLightsResponse
+public class GetTrafficLightsResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public TrafficLightsParam? Body { get; set; }
 }
@@ -65,10 +56,12 @@ public class TrafficLightsParam
 /// <summary>
 /// 设置交通灯功能请求
 /// </summary>
-public class SetTrafficLightsRequest
+public class SetTrafficLightsRequest : BaseRequest, IRequest<SetTrafficLightsResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_traffic_lights";
+    public SetTrafficLightsRequest()
+    {
+        Cmd = "set_traffic_lights";
+    }
 
     [JsonPropertyName("body")]
     public TrafficLightsParam? Body { get; set; }
@@ -77,17 +70,6 @@ public class SetTrafficLightsRequest
 /// <summary>
 /// 设置交通灯功能响应
 /// </summary>
-public class SetTrafficLightsResponse
+public class SetTrafficLightsResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

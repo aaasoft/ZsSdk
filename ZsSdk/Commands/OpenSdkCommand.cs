@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 注册OpenSDK监听推送请求
 /// </summary>
-public class RegisterPushChannelRequest
+public class RegisterPushChannelRequest : BaseRequest, IRequest<RegisterPushChannelResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "register_push_channel";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public RegisterPushChannelRequest()
+    {
+        Cmd = "register_push_channel";
+    }
 
     [JsonPropertyName("body")]
     public RegisterPushChannelBody? Body { get; set; }
@@ -32,19 +32,8 @@ public class RegisterPushChannelBody
 /// <summary>
 /// 注册OpenSDK监听推送响应
 /// </summary>
-public class RegisterPushChannelResponse
+public class RegisterPushChannelResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }
 
 /// <summary>
@@ -62,13 +51,12 @@ public class OpenSdkPushMessage
 /// <summary>
 /// 请求OpenSDK Push请求
 /// </summary>
-public class PushMsgToOpenSdkRequest
+public class PushMsgToOpenSdkRequest : BaseRequest, IRequest<PushMsgToOpenSdkResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "push_msg_to_opensdk";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public PushMsgToOpenSdkRequest()
+    {
+        Cmd = "push_msg_to_opensdk";
+    }
 
     [JsonPropertyName("body")]
     public object? Body { get; set; }
@@ -77,14 +65,6 @@ public class PushMsgToOpenSdkRequest
 /// <summary>
 /// 请求OpenSDK Push响应
 /// </summary>
-public class PushMsgToOpenSdkResponse
+public class PushMsgToOpenSdkResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

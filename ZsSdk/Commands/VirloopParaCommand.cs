@@ -6,32 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取虚拟线圈参数请求
 /// </summary>
-public class GetVirloopParaRequest
+public class GetVirloopParaRequest : BaseRequest, IRequest<GetVirloopParaResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_virloop_para";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetVirloopParaRequest()
+    {
+        Cmd = "get_virloop_para";
+    }
 }
 
 /// <summary>
 /// 获取虚拟线圈参数响应
 /// </summary>
-public class GetVirloopParaResponse
+public class GetVirloopParaResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
-
     [JsonPropertyName("body")]
     public VirloopParaBody? Body { get; set; }
 }
@@ -48,13 +35,12 @@ public class VirloopParaBody
 /// <summary>
 /// 设置虚拟线圈参数请求
 /// </summary>
-public class SetVirloopParaRequest
+public class SetVirloopParaRequest : BaseRequest, IRequest<SetVirloopParaResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_virloop_para";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetVirloopParaRequest()
+    {
+        Cmd = "set_virloop_para";
+    }
 
     [JsonPropertyName("body")]
     public VirloopParaBody? Body { get; set; }
@@ -63,17 +49,6 @@ public class SetVirloopParaRequest
 /// <summary>
 /// 设置虚拟线圈参数响应
 /// </summary>
-public class SetVirloopParaResponse
+public class SetVirloopParaResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

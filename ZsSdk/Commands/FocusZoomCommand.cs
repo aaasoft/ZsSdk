@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 开始自动聚焦请求
 /// </summary>
-public class StartFocusAndZoomRequest
+public class StartFocusAndZoomRequest : BaseRequest, IRequest<StartFocusAndZoomResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "startfocusandzoom";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public StartFocusAndZoomRequest()
+    {
+        Cmd = "startfocusandzoom";
+    }
 
     [JsonPropertyName("body")]
     public StartFocusAndZoomBody? Body { get; set; }
@@ -32,41 +32,24 @@ public class StartFocusAndZoomBody
 /// <summary>
 /// 开始自动聚焦响应
 /// </summary>
-public class StartFocusAndZoomResponse
+public class StartFocusAndZoomResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }
 
 /// <summary>
 /// 停止自动聚焦请求
 /// </summary>
-public class StopFocusAndZoomRequest
+public class StopFocusAndZoomRequest : BaseRequest, IRequest<StopFocusAndZoomResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "stopfocusandzoom";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public StopFocusAndZoomRequest()
+    {
+        Cmd = "stopfocusandzoom";
+    }
 }
 
 /// <summary>
 /// 停止自动聚焦响应
 /// </summary>
-public class StopFocusAndZoomResponse
+public class StopFocusAndZoomResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设备组网请求基类
 /// </summary>
-public class DgJsonRequest
+public class DgJsonRequest : BaseRequest, IRequest<DgJsonResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "dg_json_request";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public DgJsonRequest()
+    {
+        Cmd = "dg_json_request";
+    }
 
     [JsonPropertyName("body")]
     public DgJsonRequestBody? Body { get; set; }
@@ -33,17 +32,8 @@ public class DgJsonRequestBody
 /// <summary>
 /// 设备组网响应
 /// </summary>
-public class DgJsonResponse
+public class DgJsonResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public DgJsonResponseBody? Body { get; set; }
 }

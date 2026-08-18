@@ -6,29 +6,19 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 获取算法识别参数请求
 /// </summary>
-public class GetAlgResultParaRequest
+public class GetAlgResultParaRequest : BaseRequest, IRequest<GetAlgResultParaResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_alg_result_para";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetAlgResultParaRequest()
+    {
+        Cmd = "get_alg_result_para";
+    }
 }
 
 /// <summary>
 /// 获取算法识别参数响应
 /// </summary>
-public class GetAlgResultParaResponse
+public class GetAlgResultParaResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public AlgResultParam? Body { get; set; }
 }
@@ -36,13 +26,12 @@ public class GetAlgResultParaResponse
 /// <summary>
 /// 设置算法识别参数请求
 /// </summary>
-public class SetAlgResultParaRequest
+public class SetAlgResultParaRequest : BaseRequest, IRequest<SetAlgResultParaResponse>
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_alg_result_para";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetAlgResultParaRequest()
+    {
+        Cmd = "set_alg_result_para";
+    }
 
     [JsonPropertyName("body")]
     public AlgResultParam? Body { get; set; }
@@ -51,14 +40,6 @@ public class SetAlgResultParaRequest
 /// <summary>
 /// 设置算法识别参数响应
 /// </summary>
-public class SetAlgResultParaResponse
+public class SetAlgResultParaResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }
