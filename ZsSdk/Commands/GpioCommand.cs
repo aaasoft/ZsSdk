@@ -31,7 +31,7 @@ public class IoctlRequest : BaseRequest, IRequest<IoctlRequest,IoctlResponse>
 {
     public IoctlRequest()
     {
-        Cmd = "ioctl";
+        Cmd = "ioctl_resp";
     }
 
     /// <summary>
