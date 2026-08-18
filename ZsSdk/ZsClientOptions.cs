@@ -16,14 +16,14 @@ public class ZsClientOptions
     public int Port { get; set; } = 8131;
 
     /// <summary>
-    /// 连接超时时间（毫秒），默认10000
+    /// 连接超时时间（毫秒），默认5000
     /// </summary>
-    public int ConnectionTimeoutMs { get; set; } = 10000;
+    public int ConnectionTimeoutMs { get; set; } = 5000;
 
     /// <summary>
-    /// 传输超时时间（毫秒），用于读写操作和等待响应，默认30000
+    /// 传输超时时间（毫秒），用于读写操作和等待响应，默认15000
     /// </summary>
-    public int TransportTimeoutMs { get; set; } = 30000;
+    public int TransportTimeoutMs { get; set; } = 15000;
 
     /// <summary>
     /// 心跳间隔时间（毫秒），自动设置为传输超时的1/3
