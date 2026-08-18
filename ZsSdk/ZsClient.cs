@@ -266,13 +266,10 @@ public class ZsClient : IDisposable
                 // 连接断开时退出循环
                 if (_stream == null || cancellationToken.IsCancellationRequested)
                     break;
+                OnDisconnected?.Invoke(this, lastException);
+                Dispose();
+                return;
             }
-        }
-
-        // 非主动断开时触发断开事件
-        if (!cancellationToken.IsCancellationRequested && lastException != null)
-        {
-            OnDisconnected?.Invoke(this, lastException);
         }
     }
 
