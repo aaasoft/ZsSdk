@@ -13,14 +13,12 @@ public class ZsClient : IDisposable
 {
     private TcpClient? _tcpClient;
     private NetworkStream? _stream;
-    private readonly string _host;
-    private readonly int _port;
+    private readonly ZsClientOptions _options;
     private byte _sequenceNumber;
     private bool _disposed;
     private CancellationTokenSource? _receiveCts;
     private Task? _receiveTask;
     private Timer? _heartbeatTimer;
-    private readonly TimeSpan _heartbeatInterval;
 
     /// <summary>
     /// 待响应的请求字典，key为请求ID
@@ -82,14 +80,21 @@ public class ZsClient : IDisposable
     /// <summary>
     /// 初始化客户端
     /// </summary>
+    /// <param name="options">客户端配置选项</param>
+    public ZsClient(ZsClientOptions options)
+    {
+        _options = options ?? throw new ArgumentNullException(nameof(options));
+        if (string.IsNullOrEmpty(options.Host))
+            throw new ArgumentException("设备IP地址不能为空", nameof(options));
+    }
+
+    /// <summary>
+    /// 初始化客户端（简化构造函数）
+    /// </summary>
     /// <param name="host">设备IP地址</param>
     /// <param name="port">端口号，默认8131</param>
-    /// <param name="heartbeatInterval">心跳间隔，默认5秒</param>
-    public ZsClient(string host, int port = 8131, TimeSpan? heartbeatInterval = null)
+    public ZsClient(string host, int port = 8131) : this(new ZsClientOptions { Host = host, Port = port })
     {
-        _host = host;
-        _port = port;
-        _heartbeatInterval = heartbeatInterval ?? TimeSpan.FromSeconds(5);
     }
 
     /// <summary>
@@ -99,14 +104,31 @@ public class ZsClient : IDisposable
     public async Task ConnectAsync(CancellationToken cancellationToken = default)
     {
         _tcpClient = new TcpClient();
-        await _tcpClient.ConnectAsync(_host, _port, cancellationToken);
+
+        // 设置连接超时
+        using var timeoutCts = new CancellationTokenSource(_options.ConnectionTimeout);
+        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
+
+        try
+        {
+            await _tcpClient.ConnectAsync(_options.Host, _options.Port, linkedCts.Token);
+        }
+        catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
+        {
+            throw new TimeoutException($"连接超时（{_options.ConnectionTimeout.TotalSeconds}秒）");
+        }
+
         _stream = _tcpClient.GetStream();
+
+        // 设置读写超时
+        _stream.ReadTimeout = (int)_options.ConnectionTimeout.TotalMilliseconds;
+        _stream.WriteTimeout = (int)_options.ConnectionTimeout.TotalMilliseconds;
 
         // 启动后台接收循环
         _receiveCts = new CancellationTokenSource();
         _receiveTask = Task.Run(() => ReceiveLoopAsync(_receiveCts.Token));
 
-        // 启动心跳定时器
+        // 启动心跳定时器（间隔为传输超时的1/3）
         _heartbeatTimer = new Timer(async _ =>
         {
             try
@@ -117,7 +139,7 @@ public class ZsClient : IDisposable
             {
                 // 心跳发送失败，由接收循环触发断开事件
             }
-        }, null, _heartbeatInterval, _heartbeatInterval);
+        }, null, _options.HeartbeatInterval, _options.HeartbeatInterval);
     }
 
     /// <summary>
@@ -170,10 +192,9 @@ public class ZsClient : IDisposable
     /// <typeparam name="TRequest">请求类型</typeparam>
     /// <typeparam name="TResponse">响应类型</typeparam>
     /// <param name="request">请求对象</param>
-    /// <param name="timeout">超时时间，默认30秒</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>响应对象</returns>
-    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
+    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
     {
         // 从请求对象中提取ID
         string? requestId = GetRequestId(request);
@@ -189,14 +210,22 @@ public class ZsClient : IDisposable
             // 发送请求
             await SendRequestAsync(request, cancellationToken);
 
-            // 等待响应（带超时）
-            using var timeoutCts = new CancellationTokenSource(timeout ?? TimeSpan.FromSeconds(30));
+            // 等待响应（使用传输超时）
+            using var timeoutCts = new CancellationTokenSource(_options.TransportTimeout);
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
 
             // 注册取消回调
             await using var registration = linkedCts.Token.Register(() => tcs.TrySetCanceled());
 
-            string responseJson = await tcs.Task;
+            string responseJson;
+            try
+            {
+                responseJson = await tcs.Task;
+            }
+            catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
+            {
+                throw new TimeoutException($"等待响应超时（{_options.TransportTimeout.TotalSeconds}秒）");
+            }
 
             // 反序列化响应
             TResponse? response;

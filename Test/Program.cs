@@ -5,8 +5,17 @@ using ZsSdk.Models;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-// 创建客户端（默认每5秒发送一次心跳）
+// 方式1：使用简化构造函数
 using var client = new ZsClient("127.0.0.1", 8131);
+
+// 方式2：使用 ZsClientOptions 配置超时参数
+// using var client = new ZsClient(new ZsClientOptions
+// {
+//     Host = "127.0.0.1",
+//     Port = 8131,
+//     ConnectionTimeout = TimeSpan.FromSeconds(5),   // 连接超时，同时用于读写超时
+//     TransportTimeout = TimeSpan.FromSeconds(30)     // 传输超时，心跳间隔自动设为10秒
+// });
 
 // 注册断开连接事件
 client.OnDisconnected += (sender, ex) =>
