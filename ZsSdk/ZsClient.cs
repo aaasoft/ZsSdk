@@ -1,4 +1,5 @@
 using System.Buffers.Binary;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 using System.Text.Json;
 using ZsSdk.Models;
@@ -16,6 +17,13 @@ public class ZsClient : IDisposable
     private readonly int _port;
     private byte _sequenceNumber;
     private bool _disposed;
+    private CancellationTokenSource? _receiveCts;
+    private Task? _receiveTask;
+
+    /// <summary>
+    /// 待响应的请求字典，key为请求ID
+    /// </summary>
+    private readonly ConcurrentDictionary<string, TaskCompletionSource<string>> _pendingRequests = new();
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -76,7 +84,7 @@ public class ZsClient : IDisposable
     }
 
     /// <summary>
-    /// 连接到设备
+    /// 连接到设备并启动后台接收循环
     /// </summary>
     /// <param name="cancellationToken">取消令牌</param>
     public async Task ConnectAsync(CancellationToken cancellationToken = default)
@@ -84,6 +92,10 @@ public class ZsClient : IDisposable
         _tcpClient = new TcpClient();
         await _tcpClient.ConnectAsync(_host, _port, cancellationToken);
         _stream = _tcpClient.GetStream();
+
+        // 启动后台接收循环
+        _receiveCts = new CancellationTokenSource();
+        _receiveTask = Task.Run(() => ReceiveLoopAsync(_receiveCts.Token));
     }
 
     /// <summary>
@@ -91,19 +103,29 @@ public class ZsClient : IDisposable
     /// </summary>
     public void Disconnect()
     {
+        _receiveCts?.Cancel();
+        _receiveCts?.Dispose();
+        _receiveCts = null;
+
         _stream?.Close();
         _tcpClient?.Close();
         _stream = null;
         _tcpClient = null;
+
+        // 取消所有待响应的请求
+        foreach (var kvp in _pendingRequests)
+        {
+            kvp.Value.TrySetCanceled();
+        }
+        _pendingRequests.Clear();
     }
 
     /// <summary>
-    /// 发送请求
+    /// 发送请求（不等待响应）
     /// </summary>
     /// <typeparam name="TRequest">请求类型</typeparam>
     /// <param name="request">请求对象</param>
     /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应对象</returns>
     public async Task SendRequestAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default)
     {
         if (_stream == null)
@@ -117,34 +139,57 @@ public class ZsClient : IDisposable
     }
 
     /// <summary>
-    /// 发送请求并接收响应
+    /// 发送请求并等待响应（通过请求ID匹配响应）
     /// </summary>
     /// <typeparam name="TRequest">请求类型</typeparam>
     /// <typeparam name="TResponse">响应类型</typeparam>
     /// <param name="request">请求对象</param>
+    /// <param name="timeout">超时时间，默认30秒</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>响应对象</returns>
-    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
     {
-        await SendRequestAsync(request, cancellationToken);
+        // 从请求对象中提取ID
+        string? requestId = GetRequestId(request);
+        if (string.IsNullOrEmpty(requestId))
+            throw new InvalidOperationException("请求对象必须包含id字段");
 
-        byte[] responsePacket = await ReadPacketAsync(cancellationToken);
-        string? responseJson = PacketParser.ExtractJson(responsePacket, out _);
+        // 注册待响应的请求
+        var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _pendingRequests[requestId] = tcs;
 
-        if (string.IsNullOrEmpty(responseJson))
-            throw new InvalidOperationException("无法解析响应数据");
-        TResponse? response;
         try
         {
-            response = JsonSerializer.Deserialize<TResponse>(responseJson, JsonOptions);
-            if (response == null)
-                throw new InvalidOperationException("响应反序列化失败");
+            // 发送请求
+            await SendRequestAsync(request, cancellationToken);
+
+            // 等待响应（带超时）
+            using var timeoutCts = new CancellationTokenSource(timeout ?? TimeSpan.FromSeconds(30));
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
+
+            // 注册取消回调
+            await using var registration = linkedCts.Token.Register(() => tcs.TrySetCanceled());
+
+            string responseJson = await tcs.Task;
+
+            // 反序列化响应
+            TResponse? response;
+            try
+            {
+                response = JsonSerializer.Deserialize<TResponse>(responseJson, JsonOptions);
+                if (response == null)
+                    throw new InvalidOperationException("响应反序列化失败");
+            }
+            catch (Exception ex) when (ex is not InvalidOperationException)
+            {
+                throw new IOException($"将JSON序列化为[{typeof(TResponse).FullName}]时出错，JSON内容：{responseJson}");
+            }
+            return response;
         }
-        catch
+        finally
         {
-            throw new IOException($"将JSON序列化为[{typeof(TResponse).FullName}]时出错，JSON内容：{responseJson}");
+            _pendingRequests.TryRemove(requestId, out _);
         }
-        return response;
     }
 
     /// <summary>
@@ -162,14 +207,10 @@ public class ZsClient : IDisposable
     }
 
     /// <summary>
-    /// 启动接收消息循环
+    /// 后台接收循环（自动在连接后启动）
     /// </summary>
-    /// <param name="cancellationToken">取消令牌</param>
-    public async Task StartReceiveLoopAsync(CancellationToken cancellationToken = default)
+    private async Task ReceiveLoopAsync(CancellationToken cancellationToken)
     {
-        if (_stream == null)
-            throw new InvalidOperationException("未连接到设备");
-
         while (!cancellationToken.IsCancellationRequested)
         {
             try
@@ -185,15 +226,19 @@ public class ZsClient : IDisposable
                 string? json = PacketParser.ExtractJson(packet, out var extraDataSpan);
                 if (string.IsNullOrEmpty(json))
                     continue;
+
                 ProcessReceivedMessage(json, extraDataSpan);
             }
             catch (OperationCanceledException)
             {
                 break;
             }
-            catch
+            catch (Exception)
             {
-                throw;
+                // 连接断开时退出循环
+                if (_stream == null || cancellationToken.IsCancellationRequested)
+                    break;
+                // 其他异常继续尝试
             }
         }
     }
@@ -210,6 +255,19 @@ public class ZsClient : IDisposable
         if (string.IsNullOrEmpty(cmd))
             return;
 
+        // 检查是否有对应的待响应请求
+        if (root.TryGetProperty("id", out var idElement))
+        {
+            string? id = idElement.GetString();
+            if (!string.IsNullOrEmpty(id) && _pendingRequests.TryRemove(id, out var tcs))
+            {
+                // 找到匹配的请求，完成响应
+                tcs.TrySetResult(json);
+                return;
+            }
+        }
+
+        // 没有匹配的请求，作为推送消息处理
         switch (cmd)
         {
             case "ivs_result":
@@ -266,6 +324,20 @@ public class ZsClient : IDisposable
                     OnOpenSdkPushMessage?.Invoke(this, pushMsg);
                 break;
         }
+    }
+
+    /// <summary>
+    /// 从请求对象中提取ID字段
+    /// </summary>
+    private static string? GetRequestId<TRequest>(TRequest request)
+    {
+        var type = typeof(TRequest);
+        var idProperty = type.GetProperty("Id") ?? type.GetProperty("id");
+        if (idProperty == null)
+            return null;
+
+        var value = idProperty.GetValue(request);
+        return value?.ToString();
     }
 
     private async Task<byte[]> ReadPacketAsync(CancellationToken cancellationToken)
