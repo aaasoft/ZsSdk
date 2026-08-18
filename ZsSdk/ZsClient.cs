@@ -184,19 +184,6 @@ public class ZsClient : IDisposable
     /// <returns>响应对象</returns>
     public async Task<TResponse> SendRequestAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default) where TResponse : BaseResponse
     {
-        return await SendRequestAsync<IRequest<TResponse>, TResponse>(request, cancellationToken);
-    }
-
-    /// <summary>
-    /// 发送请求并等待响应（通过请求ID匹配响应）
-    /// </summary>
-    /// <typeparam name="TRequest">请求类型</typeparam>
-    /// <typeparam name="TResponse">响应类型</typeparam>
-    /// <param name="request">请求对象</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应对象</returns>
-    public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
-    {
         // 从请求对象中提取ID（必须继承自BaseRequest）
         if (request is not BaseRequest baseRequest)
             throw new InvalidOperationException("请求对象必须继承自BaseRequest");
