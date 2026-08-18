@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
@@ -26,13 +27,12 @@ public class GpioTriggerMessage
 /// <summary>
 /// 控制IO输出请求
 /// </summary>
-public class IoctlRequest
+public class IoctlRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "ioctl";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public IoctlRequest()
+    {
+        Cmd = "ioctl";
+    }
 
     /// <summary>
     /// 对应的输出IO编号
@@ -56,28 +56,19 @@ public class IoctlRequest
 /// <summary>
 /// 控制IO输出响应
 /// </summary>
-public class IoctlResponse
+public class IoctlResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }
 
 /// <summary>
 /// 获取IO输入状态请求
 /// </summary>
-public class GetGpioValueRequest
+public class GetGpioValueRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_gpio_value";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetGpioValueRequest()
+    {
+        Cmd = "get_gpio_value";
+    }
 
     /// <summary>
     /// 对应的输入IO编号
@@ -89,17 +80,8 @@ public class GetGpioValueRequest
 /// <summary>
 /// 获取IO输入状态响应
 /// </summary>
-public class GetGpioValueResponse
+public class GetGpioValueResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("gpio")]
     public int Gpio { get; set; }
 
@@ -113,13 +95,12 @@ public class GetGpioValueResponse
 /// <summary>
 /// 获取IO输出状态请求
 /// </summary>
-public class GetGpioOutValueRequest
+public class GetGpioOutValueRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_gpio_out_value";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetGpioOutValueRequest()
+    {
+        Cmd = "get_gpio_out_value";
+    }
 
     /// <summary>
     /// 对应的输入IO编号
@@ -131,17 +112,8 @@ public class GetGpioOutValueRequest
 /// <summary>
 /// 获取IO输出状态响应
 /// </summary>
-public class GetGpioOutValueResponse
+public class GetGpioOutValueResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("gpio")]
     public int Gpio { get; set; }
 

@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 恢复设备默认配置请求
 /// </summary>
-public class SetFactoryDefaultRequest
+public class SetFactoryDefaultRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_factorydefault";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetFactoryDefaultRequest()
+    {
+        Cmd = "set_factorydefault";
+    }
 
     [JsonPropertyName("body")]
     public SetFactoryDefaultBody? Body { get; set; }
@@ -32,14 +32,6 @@ public class SetFactoryDefaultBody
 /// <summary>
 /// 恢复设备默认配置响应
 /// </summary>
-public class SetFactoryDefaultResponse
+public class SetFactoryDefaultResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

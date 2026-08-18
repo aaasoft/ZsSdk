@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using ZsSdk.Enums;
 
 namespace ZsSdk.Models;
 
@@ -12,10 +11,10 @@ public class BaseResponse
     /// 命令字符串
     /// </summary>
     [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = string.Empty;
+    public string? Cmd { get; set; }
 
     /// <summary>
-    /// 序列字符串（唯一），字符串长度小于30，等于请求时的id
+    /// 序列字符串（唯一），等于请求时的id
     /// </summary>
     [JsonPropertyName("id")]
     public string? Id { get; set; }

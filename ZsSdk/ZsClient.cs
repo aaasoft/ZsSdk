@@ -197,10 +197,11 @@ public class ZsClient : IDisposable
     /// <returns>响应对象</returns>
     public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
     {
-        // 从请求对象中提取ID
-        string? requestId = GetRequestId(request);
-        if (string.IsNullOrEmpty(requestId))
-            throw new InvalidOperationException("请求对象必须包含id字段");
+        // 从请求对象中提取ID（必须继承自BaseRequest）
+        if (request is not BaseRequest baseRequest)
+            throw new InvalidOperationException("请求对象必须继承自BaseRequest");
+
+        string requestId = baseRequest.Id;
 
         // 注册待响应的请求
         var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -384,20 +385,6 @@ public class ZsClient : IDisposable
                     OnOpenSdkPushMessage?.Invoke(this, pushMsg);
                 break;
         }
-    }
-
-    /// <summary>
-    /// 从请求对象中提取ID字段
-    /// </summary>
-    private static string? GetRequestId<TRequest>(TRequest request)
-    {
-        var type = typeof(TRequest);
-        var idProperty = type.GetProperty("Id") ?? type.GetProperty("id");
-        if (idProperty == null)
-            return null;
-
-        var value = idProperty.GetValue(request);
-        return value?.ToString();
     }
 
     private async Task<byte[]> ReadPacketAsync(CancellationToken cancellationToken)

@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 设置设备名称请求
 /// </summary>
-public class SetDevNameRequest
+public class SetDevNameRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_dev_name";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetDevNameRequest()
+    {
+        Cmd = "set_dev_name";
+    }
 
     [JsonPropertyName("body")]
     public SetDevNameBody? Body { get; set; }
@@ -32,17 +32,6 @@ public class SetDevNameBody
 /// <summary>
 /// 设置设备名称响应
 /// </summary>
-public class SetDevNameResponse
+public class SetDevNameResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

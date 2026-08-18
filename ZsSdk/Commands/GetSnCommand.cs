@@ -1,33 +1,24 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 获取设备序列号请求
 /// </summary>
-public class GetSnRequest
+public class GetSnRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "getsn";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetSnRequest()
+    {
+        Cmd = "getsn";
+    }
 }
 
 /// <summary>
 /// 获取设备序列号响应
 /// </summary>
-public class GetSnResponse
+public class GetSnResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     /// <summary>
     /// 设备序列号：正确值为17位长的字符串，前8位 + '-' + 后8位
     /// </summary>

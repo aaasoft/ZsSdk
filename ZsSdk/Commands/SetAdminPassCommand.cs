@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 修改设备admin密码请求
 /// </summary>
-public class SetAdminPassRequest
+public class SetAdminPassRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_adminpass";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetAdminPassRequest()
+    {
+        Cmd = "set_adminpass";
+    }
 
     [JsonPropertyName("body")]
     public SetAdminPassBody? Body { get; set; }
@@ -38,17 +38,6 @@ public class SetAdminPassBody
 /// <summary>
 /// 修改设备admin密码响应
 /// </summary>
-public class SetAdminPassResponse
+public class SetAdminPassResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

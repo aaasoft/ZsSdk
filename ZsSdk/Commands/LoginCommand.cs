@@ -1,33 +1,24 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 请求开始登录
 /// </summary>
-public class StartLoginRequest
+public class StartLoginRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "start_login";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public StartLoginRequest()
+    {
+        Cmd = "start_login";
+    }
 }
 
 /// <summary>
 /// 请求开始登录响应
 /// </summary>
-public class StartLoginResponse
+public class StartLoginResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     /// <summary>
     /// 当前加密方式的索引
     /// </summary>
@@ -68,13 +59,12 @@ public class LoginEncryptMethod
 /// <summary>
 /// 登录认证请求
 /// </summary>
-public class LoginAuthenticationRequest
+public class LoginAuthenticationRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "login_authentication";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public LoginAuthenticationRequest()
+    {
+        Cmd = "login_authentication";
+    }
 
     /// <summary>
     /// 用户密码；使用HMAC-SHA1算法对用户密码进行加密，加密物料使用signature，再对加密后的数据进行Base64生成的字符串
@@ -86,14 +76,6 @@ public class LoginAuthenticationRequest
 /// <summary>
 /// 登录认证响应
 /// </summary>
-public class LoginAuthenticationResponse
+public class LoginAuthenticationResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

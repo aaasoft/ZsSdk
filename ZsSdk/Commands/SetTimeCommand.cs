@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 设置系统时间请求
 /// </summary>
-public class SetTimeRequest
+public class SetTimeRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_time";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetTimeRequest()
+    {
+        Cmd = "set_time";
+    }
 
     /// <summary>
     /// 时间字符串，格式必须是："XXXX-XX-XX XX:XX:XX"
@@ -23,14 +23,6 @@ public class SetTimeRequest
 /// <summary>
 /// 设置系统时间响应
 /// </summary>
-public class SetTimeResponse
+public class SetTimeResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

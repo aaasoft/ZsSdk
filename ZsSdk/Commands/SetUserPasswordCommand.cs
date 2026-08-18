@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 修改账号密码请求
 /// </summary>
-public class SetUserPasswordRequest
+public class SetUserPasswordRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_user_password";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetUserPasswordRequest()
+    {
+        Cmd = "set_user_password";
+    }
 
     [JsonPropertyName("body")]
     public SetUserPasswordBody? Body { get; set; }
@@ -44,17 +44,6 @@ public class SetUserPasswordBody
 /// <summary>
 /// 修改账号密码响应
 /// </summary>
-public class SetUserPasswordResponse
+public class SetUserPasswordResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }

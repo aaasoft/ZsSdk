@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using ZsSdk.Enums;
 
 namespace ZsSdk.Models;
 
@@ -15,8 +14,16 @@ public class BaseRequest
     public string Cmd { get; set; } = string.Empty;
 
     /// <summary>
-    /// 序列字符串（唯一），字符串长度小于30
+    /// 序列字符串（唯一），自动生成，长度小于30
     /// </summary>
     [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public string Id { get; set; } = GenerateId();
+
+    /// <summary>
+    /// 生成唯一ID（8位随机字符串）
+    /// </summary>
+    private static string GenerateId()
+    {
+        return Guid.NewGuid().ToString("N")[..8];
+    }
 }

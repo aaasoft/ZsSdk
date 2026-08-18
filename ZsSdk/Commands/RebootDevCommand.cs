@@ -1,30 +1,22 @@
 using System.Text.Json.Serialization;
+using ZsSdk.Models;
 
 namespace ZsSdk.Commands;
 
 /// <summary>
 /// 重启设备请求
 /// </summary>
-public class RebootDevRequest
+public class RebootDevRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "reboot_dev";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public RebootDevRequest()
+    {
+        Cmd = "reboot_dev";
+    }
 }
 
 /// <summary>
 /// 重启设备响应
 /// </summary>
-public class RebootDevResponse
+public class RebootDevResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

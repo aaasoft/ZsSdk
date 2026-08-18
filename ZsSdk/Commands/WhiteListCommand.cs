@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 操作白名单请求
 /// </summary>
-public class WhiteListOperatorRequest
+public class WhiteListOperatorRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "white_list_operator";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public WhiteListOperatorRequest()
+    {
+        Cmd = "white_list_operator";
+    }
 
     /// <summary>
     /// 子命令：update_or_add增加或更新 delete删除 select查询
@@ -42,17 +41,8 @@ public class WhiteListOperatorRequest
 /// <summary>
 /// 操作白名单响应
 /// </summary>
-public class WhiteListOperatorResponse
+public class WhiteListOperatorResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     /// <summary>
     /// 子命令
     /// </summary>

@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 设置中心服务器网络参数请求
 /// </summary>
-public class SetCenterServerNetRequest
+public class SetCenterServerNetRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "set_centerserver_net";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public SetCenterServerNetRequest()
+    {
+        Cmd = "set_centerserver_net";
+    }
 
     [JsonPropertyName("body")]
     public CenterServerParam? Body { get; set; }
@@ -21,14 +20,6 @@ public class SetCenterServerNetRequest
 /// <summary>
 /// 设置中心服务器网络参数响应
 /// </summary>
-public class SetCenterServerNetResponse
+public class SetCenterServerNetResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
 }

@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 注册脱机功能请求
 /// </summary>
-public class RegOfflineCheckRequest
+public class RegOfflineCheckRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "reg_offline_check";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public RegOfflineCheckRequest()
+    {
+        Cmd = "reg_offline_check";
+    }
 
     /// <summary>
     /// 脱机响应的超时时间（秒为单位）
@@ -24,13 +23,12 @@ public class RegOfflineCheckRequest
 /// <summary>
 /// 取消脱机注册请求
 /// </summary>
-public class CancelOfflineCheckRequest
+public class CancelOfflineCheckRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "reg_offline_check";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public CancelOfflineCheckRequest()
+    {
+        Cmd = "reg_offline_check";
+    }
 
     [JsonPropertyName("sucmd")]
     public string SubCmd { get; set; } = "cancel";
@@ -39,17 +37,8 @@ public class CancelOfflineCheckRequest
 /// <summary>
 /// 脱机功能响应
 /// </summary>
-public class OfflineCheckResponse
+public class OfflineCheckResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("response")]
     public string? Response { get; set; }
 }
@@ -57,13 +46,12 @@ public class OfflineCheckResponse
 /// <summary>
 /// 注册脱机事件请求
 /// </summary>
-public class RegisterOfflineEventRequest
+public class RegisterOfflineEventRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "register_offline_event";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public RegisterOfflineEventRequest()
+    {
+        Cmd = "register_offline_event";
+    }
 
     [JsonPropertyName("body")]
     public RegisterOfflineEventBody? Body { get; set; }
@@ -84,19 +72,8 @@ public class RegisterOfflineEventBody
 /// <summary>
 /// 注册脱机事件响应
 /// </summary>
-public class RegisterOfflineEventResponse
+public class RegisterOfflineEventResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
-    [JsonPropertyName("error_msg")]
-    public string? ErrorMsg { get; set; }
 }
 
 /// <summary>
@@ -126,29 +103,19 @@ public class OfflineStatusChangeBody
 /// <summary>
 /// 获取脱机状态请求
 /// </summary>
-public class GetOfflineStatusRequest
+public class GetOfflineStatusRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_offline_status";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public GetOfflineStatusRequest()
+    {
+        Cmd = "get_offline_status";
+    }
 }
 
 /// <summary>
 /// 获取脱机状态响应
 /// </summary>
-public class GetOfflineStatusResponse
+public class GetOfflineStatusResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public OfflineStatusChangeBody? Body { get; set; }
 }

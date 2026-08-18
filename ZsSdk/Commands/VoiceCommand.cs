@@ -6,13 +6,12 @@ namespace ZsSdk.Commands;
 /// <summary>
 /// 语音协议请求基类
 /// </summary>
-public class PlayserverJsonRequest
+public class PlayserverJsonRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "playserver_json_request";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public PlayserverJsonRequest()
+    {
+        Cmd = "playserver_json_request";
+    }
 
     [JsonPropertyName("body")]
     public PlayserverJsonRequestBody? Body { get; set; }
@@ -30,17 +29,8 @@ public class PlayserverJsonRequestBody
 /// <summary>
 /// 语音协议响应
 /// </summary>
-public class PlayserverJsonResponse
+public class PlayserverJsonResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public PlayserverJsonResponseBody? Body { get; set; }
 }
@@ -248,13 +238,12 @@ public class VoicePlayFileBody : PlayserverJsonRequestBody
 /// <summary>
 /// 请求语音对讲
 /// </summary>
-public class StartTalkRequest
+public class StartTalkRequest : BaseRequest
 {
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "start_talk";
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public StartTalkRequest()
+    {
+        Cmd = "start_talk";
+    }
 
     /// <summary>
     /// 每次发送数据包的大小，建议设置为320
@@ -266,17 +255,8 @@ public class StartTalkRequest
 /// <summary>
 /// 请求语音对讲响应
 /// </summary>
-public class StartTalkResponse
+public class StartTalkResponse : BaseResponse
 {
-    [JsonPropertyName("cmd")]
-    public string? Cmd { get; set; }
-
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("state_code")]
-    public int StateCode { get; set; }
-
     [JsonPropertyName("body")]
     public TalkbackParam? Body { get; set; }
 }

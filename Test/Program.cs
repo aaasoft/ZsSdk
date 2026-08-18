@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using ZsSdk;
 using ZsSdk.Commands;
 using ZsSdk.Models;
@@ -36,16 +36,15 @@ client.OnIvsResult += (sender, result) =>
 // 连接设备（自动启动后台接收循环和心跳）
 await client.ConnectAsync();
 
-// 获取序列号
+// 获取序列号（Id自动生成，无需手动设置）
 var snResponse = await client.SendRequestAsync<GetSnRequest, GetSnResponse>(
-    new GetSnRequest { Id = "123456" });
+    new GetSnRequest());
 Console.WriteLine($"设备序列号: {snResponse.Value}");
 
 // 配置识别结果推送
 await client.SendRequestAsync<IvsResultRequest, IvsResultResponse>(
     new IvsResultRequest
     {
-        Id = "123",
         Enable = true,
         Format = "json",
         Image = true
