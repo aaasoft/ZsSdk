@@ -7,7 +7,7 @@ namespace ZsSdk.Models;
 /// </summary>
 public class BaseRequest
 {
-    private static int _sequence;
+    private static int _sequence = 0;
 
     /// <summary>
     /// 命令字符串
@@ -22,7 +22,7 @@ public class BaseRequest
     public string Id { get; set; } = GenerateId();
 
     /// <summary>
-    /// 生成唯一ID（0到Int32.MaxValue自增，溢出后从1重新开始）
+    /// 生成唯一ID（1到Int32.MaxValue自增，溢出后从1重新开始）
     /// </summary>
     private static string GenerateId()
     {
