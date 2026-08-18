@@ -19,6 +19,8 @@ public class ZsClient : IDisposable
     private bool _disposed;
     private CancellationTokenSource? _receiveCts;
     private Task? _receiveTask;
+    private Timer? _heartbeatTimer;
+    private readonly TimeSpan _heartbeatInterval;
 
     /// <summary>
     /// 待响应的请求字典，key为请求ID
@@ -73,14 +75,21 @@ public class ZsClient : IDisposable
     public event EventHandler<Commands.OpenSdkPushMessage>? OnOpenSdkPushMessage;
 
     /// <summary>
+    /// 连接断开时触发
+    /// </summary>
+    public event EventHandler<Exception>? OnDisconnected;
+
+    /// <summary>
     /// 初始化客户端
     /// </summary>
     /// <param name="host">设备IP地址</param>
     /// <param name="port">端口号，默认8131</param>
-    public ZsClient(string host, int port = 8131)
+    /// <param name="heartbeatInterval">心跳间隔，默认5秒</param>
+    public ZsClient(string host, int port = 8131, TimeSpan? heartbeatInterval = null)
     {
         _host = host;
         _port = port;
+        _heartbeatInterval = heartbeatInterval ?? TimeSpan.FromSeconds(5);
     }
 
     /// <summary>
@@ -96,6 +105,19 @@ public class ZsClient : IDisposable
         // 启动后台接收循环
         _receiveCts = new CancellationTokenSource();
         _receiveTask = Task.Run(() => ReceiveLoopAsync(_receiveCts.Token));
+
+        // 启动心跳定时器
+        _heartbeatTimer = new Timer(async _ =>
+        {
+            try
+            {
+                await SendHeartbeatAsync();
+            }
+            catch
+            {
+                // 心跳发送失败，由接收循环触发断开事件
+            }
+        }, null, _heartbeatInterval, _heartbeatInterval);
     }
 
     /// <summary>
@@ -103,6 +125,10 @@ public class ZsClient : IDisposable
     /// </summary>
     public void Disconnect()
     {
+        // 停止心跳定时器
+        _heartbeatTimer?.Dispose();
+        _heartbeatTimer = null;
+
         _receiveCts?.Cancel();
         _receiveCts?.Dispose();
         _receiveCts = null;
@@ -211,6 +237,7 @@ public class ZsClient : IDisposable
     /// </summary>
     private async Task ReceiveLoopAsync(CancellationToken cancellationToken)
     {
+        Exception? lastException = null;
         while (!cancellationToken.IsCancellationRequested)
         {
             try
@@ -233,13 +260,19 @@ public class ZsClient : IDisposable
             {
                 break;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                lastException = ex;
                 // 连接断开时退出循环
                 if (_stream == null || cancellationToken.IsCancellationRequested)
                     break;
-                // 其他异常继续尝试
             }
+        }
+
+        // 非主动断开时触发断开事件
+        if (!cancellationToken.IsCancellationRequested && lastException != null)
+        {
+            OnDisconnected?.Invoke(this, lastException);
         }
     }
 

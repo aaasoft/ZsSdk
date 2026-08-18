@@ -5,12 +5,16 @@ using ZsSdk.Models;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-// 创建客户端
+// 创建客户端（默认每5秒发送一次心跳）
 using var client = new ZsClient("127.0.0.1", 8131);
-// 连接设备（自动启动后台接收循环）
-await client.ConnectAsync();
 
-// 注册事件
+// 注册断开连接事件
+client.OnDisconnected += (sender, ex) =>
+{
+    Console.WriteLine($"连接断开: {ex.Message}");
+};
+
+// 注册识别结果事件
 client.OnIvsResult += (sender, result) =>
 {
     Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss}: 识别到车牌: {result.PlateResult?.License}");
@@ -19,6 +23,9 @@ client.OnIvsResult += (sender, result) =>
     if (result.ClipImg != null)
         File.WriteAllBytes($"ClipImg_{DateTime.Now:yyyyMMdd_HHmmss}.jpg", result.ClipImg);
 };
+
+// 连接设备（自动启动后台接收循环和心跳）
+await client.ConnectAsync();
 
 // 获取序列号
 var snResponse = await client.SendRequestAsync<GetSnRequest, GetSnResponse>(
@@ -36,24 +43,6 @@ await client.SendRequestAsync<IvsResultRequest, IvsResultResponse>(
     });
 
 Console.WriteLine($"已配置识别结果推送，等待车牌识别事件...");
-
-// 发送心跳包（后台循环已自动启动，可以随时发送命令）
-_ = Task.Run(async () =>
-{
-    while (true)
-    {
-        await Task.Delay(5000);
-        try
-        {
-            await client.SendHeartbeatAsync();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"心跳发送失败: {ex.Message}");
-            break;
-        }
-    }
-});
 
 // 保持程序运行
 await Task.Delay(Timeout.Infinite);
