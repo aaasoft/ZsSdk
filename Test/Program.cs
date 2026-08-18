@@ -39,6 +39,10 @@ client.OnIvsResult += (sender, result) =>
     if (result.ClipImg != null)
         File.WriteAllBytes($"ClipImg_{DateTime.Now:yyyyMMdd_HHmmss}.jpg", result.ClipImg);
 };
+client.OnGpioTrigger += (sender, message) =>
+{
+    Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss}: GPIO输入[{message.Gpio}]的值已经变更为[{message.Value}]");
+};
 
 // 连接设备
 await client.ConnectAsync();
@@ -57,6 +61,63 @@ await client.ConnectAsync();
         Console.WriteLine($"设备时间: {new EpochTime(rep.Timestamp).DateTime.ToLocalTime():yyyy-MM-dd HH:mm:ss}");
     else
         Console.WriteLine($"获取设备时间失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
+// 获取设备硬件版本
+{
+    var rep = await client.SendRequestAsync(new GetHwBoardVersionRequest());
+    if (rep.IsSuccessStatusCode)
+        Console.WriteLine($"设备硬件版本:{rep.Body?.BoardVersion}");
+    else
+        Console.WriteLine($"获取设备硬件版本失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
+// 获取设备产品版本
+{
+    var rep = await client.SendRequestAsync(new GetProductInfoRequest());
+    if (rep.IsSuccessStatusCode)
+        Console.WriteLine($"设备产品版本: {rep.Body?.ProductVer}");
+    else
+        Console.WriteLine($"获取设备产品版本失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+}
+//获取GPIO输入
+{
+    for (var i = 0; i <= 1; i++)
+    {
+        var rep = await client.SendRequestAsync(new GetGpioValueRequest()
+        {
+            Gpio = i
+        });
+        if (rep.IsSuccessStatusCode)
+            Console.WriteLine($"GPIO输入{i}: {rep.Value}");
+        else
+            Console.WriteLine($"获取GPIO输入{i}失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    }
+}
+//获取GPIO输出
+{
+    for (var i = 0; i <= 1; i++)
+    {
+        var rep = await client.SendRequestAsync(new GetGpioOutValueRequest()
+        {
+            Gpio = i
+        });
+        if (rep.IsSuccessStatusCode)
+            Console.WriteLine($"GPIO输出{i}: {rep.Value}");
+        else
+            Console.WriteLine($"获取GPIO输出{i}失败，原因：{rep.StateCode} {rep.ErrorMsg}");
+    }
+}
+//设置GPIO输出，先通后断
+{
+    var rep = await client.SendRequestAsync(new IoctlRequest()
+    {
+        Io = 0,
+        Value = 2,
+        Delay = 10000
+    });
+    if (rep.IsSuccessStatusCode)
+            Console.WriteLine($"设置GPIO输出，先通后断成功");
+        else
+            Console.WriteLine($"设置GPIO输出，先通后断失败，原因：{rep.StateCode} {rep.ErrorMsg}");
 }
 // 配置识别结果推送
 {

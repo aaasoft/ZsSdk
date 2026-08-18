@@ -125,10 +125,23 @@ public class ZsClient : IDisposable
 
         // 启动后台接收循环
         _clientCts = new CancellationTokenSource();
-        _ = ReceiveLoopAsync(_clientCts.Token);
+        try
+        {
+            _ = ReceiveLoopAsync(_clientCts.Token);
 
-        // 启动心跳定时器（间隔为传输超时的1/3）
-        _ = SendHeartbeatLoopAsync(_clientCts.Token);
+            // 启动心跳定时器（间隔为传输超时的1/3）
+            _ = SendHeartbeatLoopAsync(_clientCts.Token);
+
+            //读取设备序列号来判断是否连接能正常响应命令
+            var rep = await SendRequestAsync(new Commands.GetSnRequest());
+            if (!rep.IsSuccessStatusCode)
+                throw new IOException(rep.ErrorMsg);
+        }
+        catch
+        {
+            Disconnect();
+            throw;
+        }
     }
 
     /// <summary>
