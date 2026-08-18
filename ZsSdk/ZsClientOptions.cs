@@ -16,17 +16,17 @@ public class ZsClientOptions
     public int Port { get; set; } = 8131;
 
     /// <summary>
-    /// 连接超时时间，默认10秒
+    /// 连接超时时间（毫秒），默认10000
     /// </summary>
-    public TimeSpan ConnectionTimeout { get; set; } = TimeSpan.FromSeconds(10);
+    public int ConnectionTimeoutMs { get; set; } = 10000;
 
     /// <summary>
-    /// 传输超时时间（读写操作），默认30秒
+    /// 传输超时时间（毫秒），用于读写操作和等待响应，默认30000
     /// </summary>
-    public TimeSpan TransportTimeout { get; set; } = TimeSpan.FromSeconds(30);
+    public int TransportTimeoutMs { get; set; } = 30000;
 
     /// <summary>
-    /// 心跳间隔时间，自动设置为传输超时的1/3
+    /// 心跳间隔时间（毫秒），自动设置为传输超时的1/3
     /// </summary>
-    public TimeSpan HeartbeatInterval => TimeSpan.FromTicks(TransportTimeout.Ticks / 3);
+    public int HeartbeatIntervalMs => TransportTimeoutMs / 3;
 }

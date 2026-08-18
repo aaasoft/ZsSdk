@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using ZsSdk;
 using ZsSdk.Commands;
 using ZsSdk.Models;
@@ -13,8 +13,8 @@ using var client = new ZsClient("127.0.0.1", 8131);
 // {
 //     Host = "127.0.0.1",
 //     Port = 8131,
-//     ConnectionTimeout = TimeSpan.FromSeconds(5),   // 连接超时，同时用于读写超时
-//     TransportTimeout = TimeSpan.FromSeconds(30)     // 传输超时，心跳间隔自动设为10秒
+//     ConnectionTimeoutMs = 5000,    // 连接超时5秒
+//     TransportTimeoutMs = 30000     // 传输超时30秒，心跳间隔自动设为10秒
 // });
 
 // 注册断开连接事件

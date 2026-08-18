@@ -106,7 +106,7 @@ public class ZsClient : IDisposable
         _tcpClient = new TcpClient();
 
         // 设置连接超时
-        using var timeoutCts = new CancellationTokenSource(_options.ConnectionTimeout);
+        using var timeoutCts = new CancellationTokenSource(_options.ConnectionTimeoutMs);
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
 
         try
@@ -115,20 +115,21 @@ public class ZsClient : IDisposable
         }
         catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
         {
-            throw new TimeoutException($"连接超时（{_options.ConnectionTimeout.TotalSeconds}秒）");
+            throw new TimeoutException($"连接超时（{_options.ConnectionTimeoutMs}ms）");
         }
 
         _stream = _tcpClient.GetStream();
 
-        // 设置读写超时
-        _stream.ReadTimeout = (int)_options.ConnectionTimeout.TotalMilliseconds;
-        _stream.WriteTimeout = (int)_options.ConnectionTimeout.TotalMilliseconds;
+        // 设置读写超时为传输超时
+        _stream.ReadTimeout = _options.TransportTimeoutMs;
+        _stream.WriteTimeout = _options.TransportTimeoutMs;
 
         // 启动后台接收循环
         _receiveCts = new CancellationTokenSource();
         _receiveTask = Task.Run(() => ReceiveLoopAsync(_receiveCts.Token));
 
         // 启动心跳定时器（间隔为传输超时的1/3）
+        var heartbeatInterval = TimeSpan.FromMilliseconds(_options.HeartbeatIntervalMs);
         _heartbeatTimer = new Timer(async _ =>
         {
             try
@@ -139,7 +140,7 @@ public class ZsClient : IDisposable
             {
                 // 心跳发送失败，由接收循环触发断开事件
             }
-        }, null, _options.HeartbeatInterval, _options.HeartbeatInterval);
+        }, null, heartbeatInterval, heartbeatInterval);
     }
 
     /// <summary>
@@ -211,7 +212,7 @@ public class ZsClient : IDisposable
             await SendRequestAsync(request, cancellationToken);
 
             // 等待响应（使用传输超时）
-            using var timeoutCts = new CancellationTokenSource(_options.TransportTimeout);
+            using var timeoutCts = new CancellationTokenSource(_options.TransportTimeoutMs);
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
 
             // 注册取消回调
@@ -224,7 +225,7 @@ public class ZsClient : IDisposable
             }
             catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
             {
-                throw new TimeoutException($"等待响应超时（{_options.TransportTimeout.TotalSeconds}秒）");
+                throw new TimeoutException($"等待响应超时（{_options.TransportTimeoutMs}ms）");
             }
 
             // 反序列化响应
