@@ -105,19 +105,13 @@ public class GetMaxRecIdResponse : BaseResponse
 /// <summary>
 /// 获取历史记录请求
 /// </summary>
-public class GetRecordRequest
+public class GetRecordRequest : BaseRequest
 {
-        /// <summary>
-    /// 命令字符串
-    /// </summary>
-    [JsonPropertyName("cmd")]
-    public string Cmd { get; set; } = "get_record";
-
     /// <summary>
-    /// 识别结果记录的id值
+    /// 识别结果记录的id值（覆盖基类的请求序列号Id）
     /// </summary>
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public new int Id { get; set; }
 
     /// <summary>
     /// 推送识别结果数据格式，默认值：json
@@ -130,6 +124,11 @@ public class GetRecordRequest
     /// </summary>
     [JsonPropertyName("image")]
     public bool Image { get; set; } = true;
+
+    public GetRecordRequest()
+    {
+        Cmd = "get_record";
+    }
 }
 
 /// <summary>

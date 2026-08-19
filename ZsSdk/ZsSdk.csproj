@@ -8,7 +8,7 @@
 		<RepositoryUrl>https://github.com/aaasoft/ZsSdk</RepositoryUrl>
 		<Copyright />
 		<Authors>scbeta</Authors>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<Company />
 		<Description>臻识科技车牌识别一体机SDK</Description>
   </PropertyGroup>
