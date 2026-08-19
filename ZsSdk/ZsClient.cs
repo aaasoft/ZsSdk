@@ -351,19 +351,7 @@ public class ZsClient : IDisposable
         if (string.IsNullOrEmpty(cmd))
             return;
 
-        // 检查是否有对应的待响应请求
-        if (root.TryGetProperty("id", out var idElement))
-        {
-            string? id = idElement.GetString();
-            if (!string.IsNullOrEmpty(id) && _pendingRequests.TryRemove(id, out var tcs))
-            {
-                // 找到匹配的请求，完成响应
-                tcs.TrySetResult(json);
-                return;
-            }
-        }
-
-        // 没有匹配的请求，作为推送消息处理
+        // 如果是推送消息处理
         switch (cmd)
         {
             case "ivs_result":
@@ -382,43 +370,55 @@ public class ZsClient : IDisposable
                     }
                     OnIvsResult?.Invoke(this, ivsResult);
                 }
-                break;
+                return;
 
             case "gpio_trigger":
                 var gpioTrigger = JsonSerializer.Deserialize<Commands.GpioTriggerMessage>(json, JsonOptions);
                 if (gpioTrigger != null)
                     OnGpioTrigger?.Invoke(this, gpioTrigger);
-                break;
+                return;
 
             case "offline_status_change":
                 var offlineStatus = JsonSerializer.Deserialize<Commands.OfflineStatusChangeMessage>(json, JsonOptions);
                 if (offlineStatus != null)
                     OnOfflineStatusChange?.Invoke(this, offlineStatus);
-                break;
+                return;
 
             case "close_socket":
                 var closeSocket = JsonSerializer.Deserialize<Commands.CloseSocketMessage>(json, JsonOptions);
                 if (closeSocket != null)
                     OnCloseSocket?.Invoke(this, closeSocket);
-                break;
+                return;
 
             case "dg_plateinfo_result":
                 var dgResult = JsonSerializer.Deserialize<Commands.DgPlateInfoResultMessage>(json, JsonOptions);
                 if (dgResult != null)
                     OnDgPlateInfoResult?.Invoke(this, dgResult);
-                break;
+                return;
 
             case "common_alarm_result":
                 var alarmResult = JsonSerializer.Deserialize<Commands.CommonAlarmResultMessage>(json, JsonOptions);
                 if (alarmResult != null)
                     OnCommonAlarmResult?.Invoke(this, alarmResult);
-                break;
+                return;
 
             case "opensdk_push_message":
                 var pushMsg = JsonSerializer.Deserialize<Commands.OpenSdkPushMessage>(json, JsonOptions);
                 if (pushMsg != null)
                     OnOpenSdkPushMessage?.Invoke(this, pushMsg);
-                break;
+                return;
+        }
+
+        // 检查是否有对应的待响应请求
+        if (root.TryGetProperty("id", out var idElement))
+        {
+            string? id = idElement.GetString();
+            if (!string.IsNullOrEmpty(id) && _pendingRequests.TryRemove(id, out var tcs))
+            {
+                // 找到匹配的请求，完成响应
+                tcs.TrySetResult(json);
+                return;
+            }
         }
     }
 
